@@ -105,6 +105,7 @@ void Count_96PPQN()
       PORTD |= (1<<5);// met au niveau haut le sorti Din start
       PORTD &= ~(1<<4);// met au niveau bas le sorti Din 
       Send_Trig_Out();
+      Send_ExtNoteOn();
       first_play=0;
     }
     // the first note after the push on start needs to be shifted over / delayed one pulse
@@ -241,6 +242,7 @@ ISR (PCINT3_vect)
       PORTB |= 1<<2;//envoie une impulsion sur la sorti trig CPU a chaque pas
       SR.ShiftOut_Update(temp_step_led,inst_step_buffer[0][pattern_buffer]&(~inst_mute));
       Send_Trig_Out();
+      Send_ExtNoteOn();
       first_play=0;
     }
     MIDI_Send(0xf8);//Serial1.write (0xf8);//MIDI CLOCK Tick
