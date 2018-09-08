@@ -3,12 +3,63 @@
 // en mode master
 //////////////////////////////////////////////////////////////////////
 
+/////////////////////////////////
+//MIDI Output Functions
+/////////////////////////////////
+
+// plays a MIDI note. Doesn't check to see that cmd is greater than 127, or that
+// data values are less than 127: 0x90
+void MIDI_noteOn(int cmd, int pitch, int velocity) {
+  MIDI_Send(cmd);
+  MIDI_Send(pitch);
+  MIDI_Send(velocity);
+}
+
+// stops a MIDI note. Doesn't check to see that cmd is greater than 127, or that
+// data values are less than 127:  0x80
+void MIDI_noteOff(int cmd, int pitch, int velocity) {
+  MIDI_Send(cmd);
+  MIDI_Send(pitch);
+  MIDI_Send(velocity);
+}
+
+
+void Send_ExtNoteOn()
+{
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG1)) {
+    MIDI_noteOn(0x90, 0x29, 0x6b);
+  }
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG2)) {
+    MIDI_noteOn(0x91, 0x2b, 0x6b);
+  }
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG3)) {
+    MIDI_noteOn(0x92, 0x2d, 0x6b);
+  }
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),EXT1)) {
+    MIDI_noteOn(0x93, 0x2f, 0x6b);
+  }
+}
+
+void Send_ExtNoteOff()
+{
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG1)) {
+    MIDI_noteOff(0x80, 0x29, 0x45);
+  }
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG2)) {
+    MIDI_noteOff(0x81, 0x2b, 0x45);
+  }
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG3)) {
+    MIDI_noteOff(0x82, 0x2d, 0x45);
+  }
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),EXT1)) {
+    MIDI_noteOff(0x83, 0x2f, 0x45);
+  }
+}
+
 void Count_96PPQN()
 {
 
   //  if ( selected_mode == MIDI_PLAY )  return;
-
-
 
   //PORTB &=~(1<<2);// met a 0 la sorti TRIG CPU
   Reset_Trig_Out();
@@ -16,15 +67,13 @@ void Count_96PPQN()
   //MODE ROLL
   if(roll_mode && ppqn_count%roll_scale[scale_type][roll_pointer] == 0 && inst_roll>0){
     PORTB |= (1<<2);//envoie une impulsion sur la sorti trig CPU a chaque pas
-
   }
   if(step_changed){
-
     SR.ShiftOut_Update(temp_step_led,((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute)|inst_roll));
     Send_Trig_Out();
+    Send_ExtNoteOn();
     step_changed=0;
     PORTB |= (1<<2);//envoie une impulsion sur la sorti trig CPU a chaque pas
-
   }
   else{
     SR.ShiftOut_Update(temp_step_led,inst_roll);
@@ -101,7 +150,10 @@ void Count_96PPQN()
           load_pattern_ok=0;//reinitialise le flag de load pattern
         }
       }
-    } 
+    }
+    else if (ppqn_count==pattern_scale[pattern_buffer]/2){
+      Send_ExtNoteOff(); // Don't let midi output notes last longer than half a step.
+    }
   }
 
   //STOP=================================================================
@@ -165,10 +217,14 @@ ISR (PCINT3_vect)
     if(step_changed){
       SR.ShiftOut_Update(temp_step_led,inst_step_buffer[step_count][pattern_buffer]&(~inst_mute));
       Send_Trig_Out();
+      Send_ExtNoteOn();
       step_changed=0;
     }
     else{
       SR.ShiftOut_Update(temp_step_led,inst_roll);
+      if (ppqn_count==pattern_scale[pattern_buffer]/2){
+        Send_ExtNoteOff(); // Don't let midi output notes last longer than half a step.
+      }
     }
     //pdate le clignotements des leds
     if (tempo_led_count>=12) {
@@ -240,7 +296,7 @@ ISR (PCINT3_vect)
     if((selected_mode==SONG_MIDI_MASTER || selected_mode==SONG_MIDI_SLAVE || selected_mode==SONG_DIN_SLAVE)&&(button_reset)){
       pattern_count=0;//reinitilise le compteur
     }
-    MIDI_Send(0xf8);//Serial1.write (0xf8);
+    MIDI_Send(0xf8);//Serial1.write (0xf8); // Midi Clock Tick
     step_count=0;//reinitialise a -1 le compteur de pas pour pouvoir lire le premier pas 
     ppqn_count=0;
     SR.ShiftOut_Update(temp_step_led,0);

@@ -21,6 +21,8 @@ for future versions.
   void Verticalize_Pattern();
   void Send_Trig_Out();
   void Reset_Trig_Out();
+  void Send_ExtNoteOn();
+  void Send_ExtNoteOff();
   void Handle_NoteOff(byte channel, byte pitch, byte velocity);
   void Check_Midi_Channel();
   void Send_Trig_Out_Midi();
@@ -41,6 +43,8 @@ for future versions.
   void Update_Pattern_Led();
   void Mode_Pattern();
   void MIDI_Send(byte OutByte);
+  void MIDI_noteOn(byte channel, byte pitch, byte velocity);
+  void MIDI_noteOff(byte channel, byte pitch, byte velocity);
   void Wire_Begin_TX(uint16_t address);
   void Save_Midi_Channel();
   void Save_Midi_Note();
