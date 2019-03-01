@@ -1,5 +1,5 @@
 = E-licktronic Yocto V1 manual
-
+:toc:
 :sectnums:
 
 == Description
