@@ -1,36 +1,10 @@
 //=========================================================================================================
 //function which verticalizes the CaD pattern which takes each bit of each step to make a word of 16 bits
-//fonction qui verticalize le pattern CaD qui prend chaque bit de chaque pas pour en faire un mot de 16bits
 //=========================================================================================================
-
-void Verticalize_Pattern_Init()
-{
-
-  if ( selected_pattern_edited || selected_pattern_changed ){
-    selected_pattern_changed=0;
-    for (byte i=0;i<16;i++){//loop autant de fois que de step par parti soit 16
-      inst_step_buffer[i][!pattern_buffer]=0;//initialize a 0 le buffer
-      for(byte j=0;j<16;j++){//loop autant de fois que d'instrument soit 16
-        inst_step_buffer[i][!pattern_buffer]^=(bitRead(pattern[!pattern_buffer][j][0],i)<<j);
-      }
-    }
-    for (byte i=16;i<32;i++){//loop autant de fois que de step par parti soit 16
-      inst_step_buffer[i][!pattern_buffer]=0;//initialize a 0 le buffer
-      for(byte j=0;j<16;j++){//loop autant de fois que d'instrument soit 16
-        inst_step_buffer[i][!pattern_buffer]^=(bitRead(pattern[!pattern_buffer][j][1],i-16)<<j);
-      }
-    }
-  }
-  if((!play) && (old_pattern_nbr != pattern_nbr)){
-    pattern_buffer=!pattern_buffer;//permet de switcher entre les deux pattern present dans le buffer au debut de la mesure
-    old_pattern_nbr=pattern_nbr;
-  } 
-}
 
 void Verticalize_Pattern()
 {
   //if the selected pattern has changed, we verticalize the pattern which was loaded in the buffer, in the buffer of the instrument and it will be played at the beggining of the next measure
-  //Si le pattern selectionner a changer on le verticalize le pattern qui a été loader dans le buffer, dans le buffer de l'inst et il sera jouer au debut de la mesure suivante
   if  ( selected_pattern_changed ) {
 
     selected_pattern_changed=0;

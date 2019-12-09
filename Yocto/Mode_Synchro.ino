@@ -13,7 +13,7 @@ void Mode_Synchro(byte mode) {
     cli();//arrete toutes les interruptions
     //UCSR1B &= ~(1 << RXCIE1); //disable UART1 interrupt
     PCMSK3 = 0x00;//disable l'interruption par PIN Change
-    Timer1.attachInterrupt(Count_96PPQN); // attache l'interruption timer Master
+    Timer1.attachInterrupt(Count_24PPQN); // attache l'interruption timer Master
     Timer3.attachInterrupt(Count_Clock);
     DDRD |= ((1<<4)|(1<<5));//Met les pins DIN start et clock en sorti
     sei();                     // turn on interrupts

@@ -1,21 +1,20 @@
 void Mode_Pattern(){
 
-  Verticalize_Pattern();// cf fonction, 
+  // Read the button states from the shift register.
+  unsigned int reading = SR.Button_Step_Read();
 
-  // we read the buttons
-  unsigned int reading = SR.Button_Step_Read();// on lit les boutons
-  // if they have changes, we record them
-  if(reading!=old_step_button_state){// si ils ont changer on enregistre le temps
+  // Debounce the reading
+  if (reading!=old_step_button_state){
     millis_debounce_step_button=millis();
   }
-  // after the debounce time, we compare the new value of the buttons to the old value
-  if((millis()-millis_debounce_step_button)>=DEBOUNCE){//apres le temps de debounce on compare la valeur des boutons avec l'ancienne valeur
-    if(reading!=step_button_state){
+  if ((millis()-millis_debounce_step_button)>=DEBOUNCE) {
+    // we compare the new value of the buttons to the old value
+    if (reading!=step_button_state) {
       step_button_state=reading;
 
       //CHECK LE STATUT DES STEP BOUTONS-------------------------------------------------------------------
       for (byte i=0;i<16;i++){
-        // initialize the the array of the value of each step button
+        // initialize the array of the value of each step button
         step_button_just_pressed[i]=0;//initialise l'array de la valeur de chaque bouton step
         step_button_current_state[i]= bitRead(reading,i);
         if (step_button_current_state[i]!=step_button_previous_state[i]){
@@ -195,10 +194,9 @@ void Mode_Pattern(){
         }
       }
     }
-    // if we have released (unpushed) all the buttons
-    else if (step_button_state==0){//si on a relacher tous les boutons 
-      // we initialize the counter of the number of pushed buttons
-      pushed_button_step_count=0;//on initialise le compteur du nombre de bouton appuyer
+    // if we have released (unpushed) all the buttons we initialize the counter of the number of pushed buttons.
+    else if (step_button_state==0) {
+      pushed_button_step_count=0;
     }
   }
 
@@ -296,9 +294,11 @@ void Mode_Pattern(){
         // However in practice this usually does not work. Double triggers are better than no
         // triggers at all, so we go for the possible double trigger for now:
         SR.Inst_Send(1<<selected_inst);
+        /*
         Set_CPU_Trig_High();
         delayMicroseconds(10);
         Set_CPU_Trig_Low();
+        */
         // Make sure the change is saved.
         selected_pattern_edited=1;
         selected_pattern_edited_saved=1;

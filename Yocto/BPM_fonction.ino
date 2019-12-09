@@ -30,7 +30,7 @@ void Check_BPM() {
             //Set the new counter value of the encoder
             bpm -= tmpdata;  
             bpm = constrain(bpm,200,1000); 
-            timer_time = ((unsigned int)(2500000/bpm));
+            timer_time = ((unsigned int)(timer_numerator/bpm));
             //Serial.println(timer_time);
             Timer1.initialize(timer_time); // set a timer of length in microseconds
         }

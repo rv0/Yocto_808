@@ -90,6 +90,8 @@ boolean first_time_paste_pattern=0;//flag que l'on vient de rentrée dans le mod
 
 unsigned int bpm; // bpm du sequenceur depend de l'encodeur
 unsigned int timer_time;// temps d'overflow du timer depend du bpm
+unsigned long cpu_trig_micros; //
+
 byte sync_mode=0;//mode de synhcronisation 0=master 1=Din slave 2=Midi slave
 byte sync_fallback=0;//used as a fallback mechanism
 // variable which serves to check the edit buttons
@@ -135,6 +137,9 @@ boolean first_push_end=0;//flag de l'etat du premier appuie sur end
 boolean  old_din_start_state=2;//variable qui sert achecker le changement de statut de start en DIN_SYNC initialise a 2 pour que le fonction s'effectuer au demarrag
 
 boolean button_part_switch=1;//variable des deux boutons part appuyer initialise a 1 comme ça au demmarrage les pattern switch automatiquement
+
+uint8_t timer_numerator;
+volatile uint8_t clock_counter=0;
 
 // variables which serve to check the step buttons
 // "last_step_button_state" stores the last debounced state of the step button
@@ -204,11 +209,10 @@ boolean load_song_ok=0;//flag que le song a ete loader dans le buffer
 //====================================================
 boolean tempo_led_flag=0;//flag de la led qui clignote suivant le tempo. Depend si PLay ou pas
 boolean tempo_led_flag_block=0;//flag qui fait clignoter la led du pattern selectionner au tempo quand un block est selectionner en play
-byte tempo_led_count=0;//incrementer dans le timer a 96ppqn 
+byte tempo_led_count=0;//incrementer dans le timer a 24ppqn 
 byte ppqn_count=0;//compte 24 fois par pas
 byte step_count=0;//compteur de pas
 boolean step_changed=0;//flag que le pas a change
-byte debut_mesure_count=0;//utiliser pour toujours savoir quand la mesure recommencer tous les 16pas
 volatile boolean end_mesure_flag=0;//indique qu'on est passe a la mesure suivante, utiliser dans le mode song play pour faire incrementer le compteur 
 volatile boolean middle_mesure_flag=0;//utiliser pour avancer au pattern suivant lors de la selection d'un block indique le milieu de la mesure
 
@@ -304,13 +308,16 @@ void setup() {
 
   //initialise les parametre du sequenceur
   bpm=480;//BPM reel = bpm/4
-  timer_time =((unsigned int)(2500000/bpm));
+  timer_numerator = 625000; // This will give 24ppqn, was 2500000 for 96 ppqn.
+
+  //uint8_t counter
+  timer_time =((unsigned int)(timer_numerator/bpm));
   Timer1.initialize(timer_time); // set a timer of length in microseconds 
   // Timer for Dinsync clock generation.
   Timer3.initialize(16000000/4800); // F_CPU/CLOCK_TIMER_FREQ
 
   // Initialise serial connection for debugger.
-  Serial.begin(115200);
+  //Serial.begin(115200);
 
   // Midi
   MIDI.begin(MIDI_CHANNEL_OMNI); 

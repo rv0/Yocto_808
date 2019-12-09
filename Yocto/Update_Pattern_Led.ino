@@ -80,8 +80,7 @@ void Update_Pattern_Led()
         PORTC=B11111100;//allumer toutes leds pour indiquer qu'on selectionne la bank
       }
     }
-    // function which allows to update the scale LED with the pattern's scale
-    //fonction qui permet d'updater la led de la scale en fonction de la scale du pattern
+    // Update the scale LED with the pattern's scale
     switch (pattern_scale[pattern_buffer]){
     case 12:
       button_scale_count=0;

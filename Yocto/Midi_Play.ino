@@ -61,7 +61,11 @@ void Handle_Stop() {
 
 
 void Handle_Clock() {
+    clock_counter++;
+
+    /*
     Reset_Trig_Out();
+    Set_CPU_Trig_High();
 
     if (first_play) {
         // Old dinsync devices have problems if the CLK comes too quickly after RUN.
@@ -73,20 +77,18 @@ void Handle_Clock() {
     }
 
     if (step_changed) {
-      step_changed=0;
-      SR.ShiftOut_Update(temp_step_led,((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute)|inst_roll));
-      Send_Trig_Out((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute)|inst_roll);
-      Set_CPU_Trig_High();
+        step_changed=0;
+        SR.ShiftOut_Update(temp_step_led,((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute)|inst_roll));
+        Send_Trig_Out((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute)|inst_roll);
     }
     else {
-      if (!first_play) {
-        SR.ShiftOut_Update(temp_step_led,inst_roll);
-      }
-      //MODE ROLL
-      if (roll_mode && ppqn_count%(roll_scale[scale_type][roll_pointer]/4) == 0 && inst_roll>0) {
-        Send_Trig_Out(inst_roll);
-        Set_CPU_Trig_High();
-      }
+        //MODE ROLL
+        if (roll_mode && ppqn_count%(roll_scale[scale_type][roll_pointer]/4) == 0 && inst_roll>0) {
+            if (!first_play) {
+                SR.ShiftOut_Update(temp_step_led,inst_roll);
+            }
+            Send_Trig_Out(inst_roll);
+        }
     }
 
     ppqn_count++;
@@ -110,7 +112,6 @@ void Handle_Clock() {
             first_play = 0; // Re-initialize the flag.
             SR.ShiftOut_Update(temp_step_led,((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute)|inst_roll));
             Send_Trig_Out((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute)|inst_roll);
-            Set_CPU_Trig_High();
         }
 
         if (ppqn_count >= pattern_scale[pattern_buffer]/4) {
@@ -161,6 +162,7 @@ void Handle_Clock() {
         }
     }
     Set_CPU_Trig_Low();
+    */
 }
 
 
