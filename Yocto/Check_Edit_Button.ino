@@ -1,3 +1,21 @@
+// Some helpers for readability.
+#define SR2_BTN_PLAY    1
+#define SR2_BTN_SHIFT   2
+
+#define SR2_BTN_SCALE   4
+
+#define SR2_BTN_1732    8 // Button 17-32.
+#define SR2_BTN_ROLL    8
+
+#define SR2_BTN_0116    16 // Button 01-16.
+#define SR2_BTN_MUTE    16
+
+#define SR2_BTN_ENC         32 
+
+#define SR2_BTN_ENC_SHIFT   34 // Encoder button + shift.
+#define SR2_BTN_PAT_PART 8 // 16 // 24
+
+
 void Check_Edit_Button_Pattern_Edit()
 {
     //-----------------------------------------------------
@@ -120,7 +138,6 @@ void Check_Edit_Button_Pattern()
     //-----------------------------------------------------
     if (sync_mode != MASTER) {
         // check the status play in DIN_SYNC mode
-        //Check la statut play en mdoe DIN_SYNC
         boolean din_start_state = PIND & (1 << 5);
         if (din_start_state != old_din_start_state) {
             if (din_start_state) { //si l'entrée DIN Start est HIGH
@@ -136,18 +153,19 @@ void Check_Edit_Button_Pattern()
         }
     }
 
-    //-------------------------------------------------------
-    byte reading = SR.Button_SR_Read(2); //stock l'etat des boutons
+    byte reading = SR.Button_SR_Read(2);
+
     if (reading != old_edit_button_state) {
         millis_debounce_edit_button = millis();
     }
+
     if ((millis() - millis_debounce_edit_button) >= DEBOUNCE) {
         if (reading != edit_button_state) {
             edit_button_state = reading;
+
+            // First check the buttons that permanently change state.
             switch (edit_button_state) {
-            //----------------------
-            //check le bouton play
-            case 1:
+            case SR2_BTN_PLAY:
                 if (sync_mode == MASTER) {
                     button_play_count++;
                     if (button_play_count == 1) {
@@ -163,36 +181,29 @@ void Check_Edit_Button_Pattern()
                     }
                 }
                 break;
-            //-------------------------
-            //check bouton scale
-            case 4:
+            case SR2_BTN_SCALE:
                 break;
-            //-------------------------
-            //check quel bouton de la part est selectionner soit 1a16 ou 17a3
-            case 8:
-                roll_mode = 1; //indique qu'on est rentré dans le mode roll
-                mute_mode = 0;
+            case SR2_BTN_ROLL:
+                mute_mode = false;
+                roll_mode = true;
                 break;
-            case 16:
-                mute_mode = 1; //indique qu'on est dans le mute mode
-                roll_mode = 0;
+            case SR2_BTN_MUTE:
+                if (mute_mode) { // Special case, if already in mute mode, enter solo mode.
+                    solo_mode = 0;
+                }
+                mute_mode = true;
+                roll_mode = false;
                 break;
             }
-            if ((mute_mode == 1 || roll_mode == 1) && button_shift == 1) {
-                // we come out of the mode with the shift button
-                mute_mode = 0; //on sort du mode mode avec le bouton shift
-                roll_mode = 0;
+
+            // Next check momentary buttons.
+            button_shift = (edit_button_state == SR2_BTN_SHIFT);
+            button_encoder = (edit_button_state == SR2_BTN_ENC);
+
+            // If shift button is pressed, we exit the mute or roll mode.
+            if (button_shift && (mute_mode || roll_mode)) {
+                mute_mode = roll_mode = 0;
             }
-            //-------------------------
-            //Bouton Shift
-            if (edit_button_state == 2) button_shift = 1; //bouton shift appuyer
-            else button_shift = 0; //bouton shift relacher
-            //Bouton encoder
-            if (edit_button_state == 32) button_encoder = 1;
-            else button_encoder = 0;
-            //Bouton Solo mode
-            if (edit_button_state == 16 && mute_mode == 1) solo_mode = 1;
-            else solo_mode = 0;
         }
     }
     old_edit_button_state = reading; // on retient l'etat des boutons

@@ -4,23 +4,24 @@ void Mode_Pattern()
     // Read the button states from the shift register.
     unsigned int reading = SR.Button_Step_Read();
 
-    // Debounce the reading
+    // If the readings have changed, remember current time.
     if (reading != old_step_button_state) {
         millis_debounce_step_button = millis();
     }
+
+    // The current reading has been the same for longer than DEBOUNCE time.
     if ((millis() - millis_debounce_step_button) >= DEBOUNCE) {
-        // we compare the new value of the buttons to the old value
+        // Check if the button states have changed.
         if (reading != step_button_state) {
             step_button_state = reading;
 
-            //CHECK LE STATUT DES STEP BOUTONS-------------------------------------------------------------------
+            // Loop over the 16 step buttons
             for (byte i = 0; i < 16; i++) {
-                // initialize the array of the value of each step button
-                step_button_just_pressed[i] = 0; //initialise l'array de la valeur de chaque bouton step
-                step_button_current_state[i] = bitRead(reading, i);
+                step_button_just_pressed[i] = false; // Initialize each step pressed value.
+                step_button_current_state[i] = bitRead(reading, i); // Assign the new value.
                 if (step_button_current_state[i] != step_button_previous_state[i]) {
                     if ((step_button_pressed[i] == LOW) && (step_button_current_state[i] == HIGH)) {
-                        step_button_just_pressed[i] = 1;
+                        step_button_just_pressed[i] = true;
                     }
                     step_button_pressed[i] = step_button_current_state[i];
                 }
@@ -29,7 +30,7 @@ void Mode_Pattern()
 
             //Mode pattern Play
             //==============================================================================================================
-            if (selected_mode == PATTERN_MIDI_MASTER || selected_mode == PATTERN_MIDI_SLAVE || selected_mode == PATTERN_DIN_SLAVE) {
+            if (PATTERN_PLAY_MODE) {
 
                 //MUTE MODE----------------------------------------------------------------------------------------------------
                 if (mute_mode) {
@@ -283,9 +284,8 @@ void Mode_Pattern()
                     selected_pattern_changed = 1; //flag que le pattern selectionner a change
                 }
             }
-            old_step_button_state = reading;
-            pattern_nbr = selected_pattern + (16 * pattern_bank); //le numero du pattern est egal au pattern selectionner plus 16 fois la bank soit 255 pattern
 
+            pattern_nbr = selected_pattern + (16 * pattern_bank); //le numero du pattern est egal au pattern selectionner plus 16 fois la bank soit 255 pattern
 
         }
     }
@@ -301,4 +301,6 @@ void Mode_Pattern()
             step_button_count[i] = 0;
         }
     }
+
+    old_step_button_state = reading;
 }
