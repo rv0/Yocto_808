@@ -27,7 +27,7 @@ for future versions.
   void Check_Midi_Channel();
   void Send_Trig_Out_Midi();
   void Handle_NoteOn(byte channel, byte pitch, byte velocity);
-  void Mode_Synchro(byte mode);
+  void Set_Sync_Mode(byte mode);
   void Set_Dinsync_Clock_High();
   void Set_Dinsync_Clock_Low();
   void Set_Dinsync_Run_High();
@@ -55,6 +55,7 @@ for future versions.
   void Save_Midi_Note();
   void Verticalize_Pattern_After_Cleared();
   void Load_Pattern();
+  void Sequencer_Tick();
   int8_t Read_Encoder();
 
 #endif
