@@ -295,7 +295,7 @@ void Mode_Pattern()
     }
 
     //Unmute all
-    if (button_encoder && (selected_mode == PATTERN_MIDI_MASTER || selected_mode == PATTERN_MIDI_SLAVE || selected_mode == PATTERN_DIN_SLAVE) && mute_mode) {
+    if (button_encoder && PATTERN_PLAY_MODE && mute_mode) {
         inst_mute = 0;
         for (byte i = 0; i < 16; i++) {
             step_button_count[i] = 0;

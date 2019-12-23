@@ -6,11 +6,11 @@ void Sequencer_Tick()
         first_play = step_count = clock24_count = clock96_count = pattern_count = tempo_led_count = 0;
 
         // Send sync start.
-        if (sync_mode != MIDI_SLAVE) {
-            MIDI_Send(0xfa); // Send Midi Start.
-        }
         if (sync_mode != DIN_SLAVE) {
             Set_Dinsync_Run_High();
+        }
+        if (sync_mode != MIDI_SLAVE) {
+            MIDI_Send(0xfa); // Send Midi Start.
         }
     }
 
@@ -45,12 +45,9 @@ void Sequencer_Tick()
             MIDI_Send(0xf8); // TODO: Magic
         }
 
-
         Set_CPU_Trig_Low();
         Reset_Trig_Out();
-
         Update_Pattern_EEprom(); // Is the another pattern selected?
-        Update_Pattern_Led(); // Update the LEDs
 
         tempo_led_count++;
 
@@ -108,9 +105,11 @@ void Sequencer_Tick()
                     }
                 }
 
-                SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count][pattern_buffer]) & (~inst_mute) | inst_roll));
-                Send_Trig_Out((inst_step_buffer[step_count][pattern_buffer]) & (~inst_mute) | inst_roll);
+                SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count-1][pattern_buffer]) & (~inst_mute) | inst_roll));
+                Send_Trig_Out((inst_step_buffer[step_count-1][pattern_buffer]) & (~inst_mute) | inst_roll);
             }
+
+            Update_Pattern_Led(); // Update the LEDs.
         }
 
         // Sequencer is stopped.
@@ -137,9 +136,11 @@ void Sequencer_Tick()
             if (PATTERN_PLAY_MODE || (SONG_PLAY_MODE && (button_reset))) {
                 pattern_count = 0;
             }
+
+            Update_Pattern_Led(); // Update the LEDs.
         }
 
-        // Roll mode.
+        // Roll works regardsless of play or stop.
         if (roll_mode && (clock24_count % roll_scale[scale_type][roll_pointer] == 0) && inst_roll > 0) { // @TODO
             SR.ShiftOut_Update(temp_step_led, inst_roll);
             Send_Trig_Out(inst_roll);

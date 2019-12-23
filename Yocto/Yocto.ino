@@ -71,6 +71,9 @@
 #define PATTERN_PLAY_MODE (selected_mode == PATTERN_MIDI_MASTER || selected_mode == PATTERN_MIDI_SLAVE || selected_mode == PATTERN_DIN_SLAVE)
 #define SONG_PLAY_MODE (selected_mode == SONG_MIDI_MASTER || selected_mode == SONG_MIDI_SLAVE || selected_mode == SONG_DIN_SLAVE)
 
+// Helpers for switch readout.
+
+
 // Version pour pouvoir jouer la jouer dans init Epp
 byte major_version = 3;
 byte minor_version = 0;
@@ -322,7 +325,7 @@ void setup()
     pinMode(TRIG_CPU_PIN, OUTPUT);
 
     //initialise les parametre du sequenceur
-    bpm = 120; //BPM reel = bpm/4
+    bpm = 480; //BPM reel = bpm/4
 
     //uint8_t counter
     timer_time = ((unsigned int)(TEMPO_COEFF / bpm));
