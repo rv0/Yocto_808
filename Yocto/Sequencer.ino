@@ -15,7 +15,11 @@ void Sequencer_Tick()
         }
     }
 
-    // Increment counters
+    // Optionally reset, then increment counters
+    if (clock24_count == 24) {
+        clock24_count = 0;
+    }
+
     if (sync_mode == MASTER) { // For now, we have master running at 96PPQN, but we don't use it yet.
         if (clock96_count == 96) {
             clock96_count = 0;
@@ -29,10 +33,6 @@ void Sequencer_Tick()
         clock96_count++;
     }
     else {
-        if (clock24_count == 24) {
-            clock24_count = 0;
-        }
-
         clock24_count++;
         ticked = 1;
     }
