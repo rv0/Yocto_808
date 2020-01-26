@@ -9,6 +9,7 @@ void Sequencer_Tick()
         if (sync_mode != DIN_SLAVE) {
             Set_Dinsync_Run_High();
         }
+
         if (sync_mode != MIDI_SLAVE) {
             MIDI_Send(0xfa); // Send Midi Start.
         }
@@ -19,16 +20,19 @@ void Sequencer_Tick()
         if (clock96_count == 96) {
             clock96_count = 0;
         }
+
         if (clock96_count % 4 == 0) {
             clock24_count++;
             ticked = 1;
         }
+
         clock96_count++;
     }
     else {
         if (clock24_count == 24) {
             clock24_count = 0;
         }
+
         clock24_count++;
         ticked = 1;
     }
@@ -41,6 +45,7 @@ void Sequencer_Tick()
         if (sync_mode != DIN_SLAVE) {
             Set_Dinsync_Clock_High(); // TODO: Magic
         }
+
         if (sync_mode != MIDI_SLAVE) {
             MIDI_Send(0xf8); // TODO: Magic
         }
@@ -75,6 +80,7 @@ void Sequencer_Tick()
                 if (step_count >= nbr_step[pattern_buffer]) { // The pattern has ended.
                     step_count = 0; // Reset the step counter.
                     end_measure_flag = true; // The measure has ended.
+
                     //------------------------------------------------ WTF is this???????????????
                     if (load_pattern_ok_flag) { // If the pattern loaded correctly.
                         pattern_buffer = !pattern_buffer; //on switche entre les deux pattern present dans le buffer au debut de la mesure
@@ -87,9 +93,11 @@ void Sequencer_Tick()
                     //MODE PATTERN PLAY--------------------------------------------------------------------------------------------------------
                     if (PATTERN_PLAY_MODE) {
                         pattern_count++; // Count when a block of patterns is selected.
+
                         if (pattern_count > nbr_pattern_block) { //on reset le comteur quand il est superieur au nombre de pattern a lire dans le block
                             pattern_count = 0;
                         }
+
                         if (nbr_pattern_block_changed_A) {
                             nbr_pattern_block_changed_A = 0;
                             pattern_count = 0;
@@ -99,14 +107,15 @@ void Sequencer_Tick()
                     //MODE SONG PLAY--------------------------------------------------------------------------------------------------------
                     else if (SONG_PLAY_MODE) {
                         pattern_count++; // Count for advancing the pattern.
+
                         if (pattern_count >= total_pattern_song[song_buffer]) { //on reset le comteur quand il est superieur au nombre de pattern dans le song
                             pattern_count = 0;
                         }
                     }
                 }
 
-                SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count-1][pattern_buffer]) & (~inst_mute) | inst_roll));
-                Send_Trig_Out((inst_step_buffer[step_count-1][pattern_buffer]) & (~inst_mute) | inst_roll);
+                SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count - 1][pattern_buffer]) & (~inst_mute) | inst_roll));
+                Send_Trig_Out((inst_step_buffer[step_count - 1][pattern_buffer]) & (~inst_mute) | inst_roll);
             }
 
             Update_Pattern_Led(); // Update the LEDs.
@@ -124,9 +133,11 @@ void Sequencer_Tick()
             if (first_stop) {
                 first_stop = false;
                 step_count = 0;
+
                 if (sync_mode != MIDI_SLAVE) {
                     MIDI_Send(0xfc); //Midi Stop
                 }
+
                 if (sync_mode != DIN_SLAVE) {
                     Set_Dinsync_Run_Low();
                 }

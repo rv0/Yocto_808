@@ -20,12 +20,15 @@ void Update_Pattern_Led()
         case 12:
             button_scale_count = 0;
             break;
+
         case 24:
             button_scale_count = 1;
             break;
+
         case 16:
             button_scale_count = 2;
             break;
+
         case 32:
             button_scale_count = 3;
             break;
@@ -55,6 +58,7 @@ void Update_Pattern_Led()
                 else {
                     temp_step_led = (((1 * tempo_led_flag_block) << selected_pattern) ^ (tempo_led_flag << ((step_count - 1) % 16)) ^ (temp_led_block ^ temp_led_pattern));
                 }
+
                 PORTC = (1 << (button_scale_count + 2)) + (1 << (!button_pattern_part + 6)); //Update les led de la parti edit suivant la scale et le nombre de pas auquel le sequenceur en est
             }
             else { // Bank selection.
@@ -111,12 +115,15 @@ void Update_Pattern_Led()
         case 12:
             button_scale_count = 0;
             break;
+
         case 24:
             button_scale_count = 1;
             break;
+
         case 16:
             button_scale_count = 2;
             break;
+
         case 32:
             button_scale_count = 3;
             break;

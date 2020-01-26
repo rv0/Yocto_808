@@ -10,17 +10,20 @@ void Clear_Pattern()
 
     // we read the buttons
     unsigned int reading = SR.Button_Step_Read();// on lit les boutons
+
     // if they have changed, you record the time
     if (reading != old_step_button_state) { // si ils ont changer on enregistre le temps
         millis_debounce_step_button = millis();
     }
+
     if ((millis() - millis_debounce_step_button) >= DEBOUNCE) {
         if (reading != step_button_state) {
             step_button_state = reading;
+
             if (!button_shift) {
                 // loop as many times as the step button becomes 16
                 for (byte i = 0; i < 16; i++) { //loop autant de fois que de bouton step soit 16
-                    if (bitRead (step_button_state, i)) {
+                    if (bitRead(step_button_state, i)) {
                         // we return the value of the selected pattern
                         //on retourne la valeur du pattern selectionner
                         selected_pattern = i;
@@ -33,7 +36,7 @@ void Clear_Pattern()
             else if (button_shift) {
                 // loop as many times as the step button becomes 16
                 for (byte i = 0; i < 16; i++) { //loop autant de fois que de bouton step soit 16
-                    if (bitRead (step_button_state, i)) {
+                    if (bitRead(step_button_state, i)) {
                         // if the shift button is pressed, you return the selected bank
                         // si le bouton shift est appuyer on retourne la bank selectionner selectionner
                         pattern_bank = i;
@@ -43,10 +46,12 @@ void Clear_Pattern()
                     }
                 }
             }
+
             // the pattern number is equal to the selected pattern plus 16 times the bank or 255 pattern
             pattern_nbr = selected_pattern + (16 * pattern_bank); //le numero du pattern est egal au pattern selectionner plus 16 fois la bank soit 255 pattern
         }
     }
+
     old_step_button_state = reading;
 
     // if the selected pattern changed
@@ -84,15 +89,18 @@ void Copy_Pattern()
 {
 
     unsigned int reading = SR.Button_Step_Read();// on lit les boutons
+
     if (reading != old_step_button_state) { // si ils ont changer on enregistre le temps
         millis_debounce_step_button = millis();
     }
+
     if ((millis() - millis_debounce_step_button) >= DEBOUNCE) {
         if (reading != step_button_state) {
             step_button_state = reading;
+
             if (!button_shift) {
                 for (byte i = 0; i < 16; i++) { //loop autant de fois que de bouton step soit 16
-                    if (bitRead (step_button_state, i)) {
+                    if (bitRead(step_button_state, i)) {
                         //on retourne la valeur du pattern selectionner
                         selected_pattern = i;
                         selected_pattern_changed = 1; //flag que le pattern selectionner a change
@@ -102,7 +110,7 @@ void Copy_Pattern()
             }
             else if (button_shift) {
                 for (byte i = 0; i < 16; i++) { //loop autant de fois que de bouton step soit 16
-                    if (bitRead (step_button_state, i)) {
+                    if (bitRead(step_button_state, i)) {
                         // si le bouton shift est appuyer on retourne la bank selectionner selectionner
                         pattern_bank = i;
                         selected_pattern_changed = 1; //flag que le pattern selectionner a change
@@ -110,9 +118,11 @@ void Copy_Pattern()
                     }
                 }
             }
+
             pattern_nbr = selected_pattern + (16 * pattern_bank); //le numero du pattern est egal au pattern selectionner plus 16 fois la bank soit 255 pattern
         }
     }
+
     old_step_button_state = reading;
 
 
@@ -123,16 +133,18 @@ void Copy_Pattern()
         pattern_copy_ok = 0; //le pattern selectionner n'a pas été copier
     }
 
-    if ( button_play && (!pattern_copy_ok || selected_pattern_changed || first_time_copy_pattern ) ) {
+    if (button_play && (!pattern_copy_ok || selected_pattern_changed || first_time_copy_pattern)) {
 
         first_time_copy_pattern = 0; //initialise le flag d'entrée dans le mode pattern clear
         selected_pattern_changed = 0;
+
         for (char i = 0; i < NBR_INST; i++) { //loop autant de fois que d'instruments
             for (char j = 0; j < 2; j++) { //loop deux fois pour les deux parti du pattern 1a16 et 17 a 32
                 // copy_pattern_buffer[i][j] =0;//initialise le buffer
                 copy_pattern_buffer[i][j] = pattern[pattern_buffer][i][j];//On met le pattern a copier dans le buffer
             }
         }
+
         copy_pattern_nbr_step = nbr_step[pattern_buffer]; //copie le nombre de pas dans le buffer
         copy_pattern_scale = pattern_scale[pattern_buffer]; //copie la scale dans le buffer
 
@@ -151,15 +163,18 @@ void Paste_Pattern()
 {
 
     unsigned int reading = SR.Button_Step_Read();// on lit les boutons
+
     if (reading != old_step_button_state) { // si ils ont changer on enregistre le temps
         millis_debounce_step_button = millis();
     }
+
     if ((millis() - millis_debounce_step_button) >= DEBOUNCE) {
         if (reading != step_button_state) {
             step_button_state = reading;
+
             if (!button_shift) {
                 for (byte i = 0; i < 16; i++) { //loop autant de fois que de bouton step soit 16
-                    if (bitRead (step_button_state, i)) {
+                    if (bitRead(step_button_state, i)) {
                         //on retourne la valeur du pattern selectionner
                         selected_pattern = i;
                         selected_pattern_changed = 1; //flag que le pattern selectionner a change
@@ -169,7 +184,7 @@ void Paste_Pattern()
             }
             else if (button_shift) {
                 for (byte i = 0; i < 16; i++) { //loop autant de fois que de bouton step soit 16
-                    if (bitRead (step_button_state, i)) {
+                    if (bitRead(step_button_state, i)) {
                         // si le bouton shift est appuyer on retourne la bank selectionner selectionner
                         pattern_bank = i;
                         selected_pattern_changed = 1; //flag que le pattern selectionner a change
@@ -177,12 +192,14 @@ void Paste_Pattern()
                     }
                 }
             }
+
             pattern_nbr = selected_pattern + (16 * pattern_bank); //le numero du pattern est egal au pattern selectionner plus 16 fois la bank soit 255 pattern
         }
     }
+
     old_step_button_state = reading;
 
-    if ( button_play && ( selected_pattern_changed || first_time_paste_pattern ) ) {
+    if (button_play && (selected_pattern_changed || first_time_paste_pattern)) {
         selected_pattern_changed = false;
         first_time_paste_pattern = 0; //initialise le flag d'entrée dans le mode pattern clear
         Save_Paste_Pattern();
