@@ -35,7 +35,7 @@ void loop()
             }
 
             mute_mode = 0;
-            inst_mute = 0;
+            muted_instruments = 0;
         }
 
         // When we switch between modes while playing we don't wanna lose the sync mode.

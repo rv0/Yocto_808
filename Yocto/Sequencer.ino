@@ -117,8 +117,8 @@ void Sequencer_Tick()
                     }
                 }
 
-                SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count - 1][pattern_buffer]) & (~inst_mute) | inst_roll));
-                Send_Trig_Out((inst_step_buffer[step_count - 1][pattern_buffer]) & (~inst_mute) | inst_roll);
+                SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count - 1][pattern_buffer]) & (~muted_instruments) | inst_roll));
+                Send_Trig_Out((inst_step_buffer[step_count - 1][pattern_buffer]) & (~muted_instruments) | inst_roll);
             }
 
             Update_Pattern_Led(); // Update the LEDs.

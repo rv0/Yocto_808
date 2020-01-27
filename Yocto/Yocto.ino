@@ -257,7 +257,7 @@ byte step_button_just_pressed[16], step_button_pressed[16], step_button_current_
 byte step_button_count[16] = {
     0
 };//compte le nombre de fois qu'on appuie sur chaque bouton step
-unsigned int inst_mute = 0; //retiens si un instrument et muter ou pas sur un mot de 16bit chaque bit correspond au mute de chaque instruments
+unsigned int muted_instruments = 0; // Keeps mute state of all instruments in a 16 bit word.
 
 
 //Variable du mode MIDI PLAY

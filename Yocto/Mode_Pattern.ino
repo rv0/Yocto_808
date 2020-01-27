@@ -41,7 +41,7 @@ void Mode_Pattern()
                         if (step_button_just_pressed[i]) {
                             if (solo_mode) {
                                 // mute all the instruments except the one pressed with "SOLO EXCLUSIVE"
-                                inst_mute = (B11111111 & (B11111111 << 8)) | ~(1 << i); //on mute tous les intrus sauf celui appuyer SOLO EXCLUSIF
+                                muted_instruments = (B11111111 & (B11111111 << 8)) | ~(1 << i); //on mute tous les intrus sauf celui appuyer SOLO EXCLUSIF
 
                                 for (byte ct = 0; ct < 16; ct++) { //on reinitialise les compteur des instrument smuter a 1 pour pouvoir les demuter en reappuyant dessus
                                     step_button_count[ct] = 1;
@@ -55,11 +55,11 @@ void Mode_Pattern()
 
                             switch (step_button_count[i]) {
                             case 1:
-                                bitSet(inst_mute, i);
+                                bitSet(muted_instruments, i);
                                 break;
 
                             case 2:
-                                bitClear(inst_mute, i);
+                                bitClear(muted_instruments, i);
                                 step_button_count[i] = 0;
                                 break;
                             }
@@ -69,7 +69,7 @@ void Mode_Pattern()
 
                 //SOLO MODE----------------------------------------------------------------------------------------------------
                 /*  if(solo_mode){
-                 inst_mute = ~step_button_state;
+                 muted_instruments = ~step_button_state;
                  }*/
                 //ROLL MODE----------------------------------------------------------------------------------------------------
                 else if (roll_mode) {
@@ -320,7 +320,7 @@ void Mode_Pattern()
 
     //Unmute all
     if (button_encoder && PATTERN_PLAY_MODE && mute_mode) {
-        inst_mute = 0;
+        muted_instruments = 0;
 
         for (byte i = 0; i < 16; i++) {
             step_button_count[i] = 0;
