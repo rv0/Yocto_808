@@ -1,0 +1,500 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"PATTERN",
+				"PATTERN_PLAY_MODE"
+			],
+			[
+				"roll",
+				"roll_mode"
+			],
+			[
+				"mute",
+				"mute_mode"
+			],
+			[
+				"clock",
+				"clock24_count"
+			],
+			[
+				"cloc",
+				"clock24_count"
+			],
+			[
+				"temp",
+				"tempo_led_flag"
+			],
+			[
+				"PATTERN_",
+				"PATTERN_DIN_SLAVE"
+			],
+			[
+				"PATTER",
+				"PATTERN_DIN_SLAVE"
+			],
+			[
+				"timer",
+				"timer_time"
+			],
+			[
+				"pa",
+				"parameters"
+			],
+			[
+				"kio",
+				"kiosk_id"
+			],
+			[
+				"robot",
+				"robot_type"
+			],
+			[
+				"trig",
+				"trig_cpu_timeout"
+			],
+			[
+				"un",
+				"unsigned"
+			],
+			[
+				"din",
+				"dinsync_clock_timeout"
+			],
+			[
+				"dins",
+				"dinsync_first_clock_timeout"
+			],
+			[
+				"sync",
+				"sync_mode"
+			],
+			[
+				"atta",
+				"attachInterrupt\tArduino attachInterrupt()"
+			],
+			[
+				"PATTE",
+				"PATTERN_MIDI_SLAVE"
+			],
+			[
+				"PATT",
+				"PATTERN_DIN_SLAVE"
+			],
+			[
+				"patter",
+				"pattern_buffer"
+			],
+			[
+				"midi_",
+				"midi_start"
+			],
+			[
+				"Hand",
+				"Handle_Start"
+			],
+			[
+				"pp",
+				"ppqn_count"
+			],
+			[
+				"data",
+				"data_inst"
+			],
+			[
+				"selecte",
+				"selected_inst"
+			],
+			[
+				"selec",
+				"selected_inst"
+			],
+			[
+				"pr",
+				"println"
+			],
+			[
+				"las",
+				"last_button_shift"
+			],
+			[
+				"button_",
+				"button_shift"
+			],
+			[
+				"butt",
+				"button_shift"
+			],
+			[
+				"PTRN",
+				"PTRN_POSITION_BYTE"
+			],
+			[
+				"PT",
+				"PTRN_SIZE_BYTE"
+			],
+			[
+				"POS",
+				"PTRN_POSITION_BYTE"
+			],
+			[
+				"dec",
+				"DEC"
+			],
+			[
+				"rece",
+				"Receive_EEprom"
+			],
+			[
+				"huis",
+				"huishoudelijke"
+			],
+			[
+				"woon",
+				"woonzorgcentrum"
+			],
+			[
+				"wo",
+				"Woonzorgcentrum"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"form",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"format",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"settings",
+				"Preferences: Settings"
+			],
+			[
+				"Form",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"Settings",
+				"Preferences: Settings"
+			],
+			[
+				"forma",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"Install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/rv0/Documents/prive/GIT/Yocto_808",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto"
+	],
+	"file_history":
+	[
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Sync_Mode.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Sequencer.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Main_Loop.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Update_Pattern_Led.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto_808.sublime-project",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Mode_Pattern.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Check_rotary_switch.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/EEprom_Fonction.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/DinSync_out.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/CRC8.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Check_Edit_Button.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/BPM_fonction.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Interruption_fonction.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Midi_Play.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Mode_Song.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Trig_out.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Update_EEprom.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Update_Song_Led.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Utility_Pattern.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Verticalize_Pattern.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Yocto.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto/Mode_Synchro.ino",
+		"/Users/rv0/Downloads/strings.xml",
+		"/Users/rv0/Downloads/log living tomorrow.txt",
+		"/Users/rv0/Documents/prive/GIT/edisyn/edisyn/synth/kawaixd5/KawaiK4.java",
+		"/Users/rv0/Documents/QBMT/GIT/launcher/app/src/main/locale/de.po",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/yocto.h",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/build-mighty/yocto.elf",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/yocto.ino",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Library/TR_SEQ/TR_SEQ.cpp",
+		"/Users/rv0/Sites/careto/mysqldump/careto/db/careto-db-backup-20190214-015630.sql",
+		"/Users/rv0/Sites/careto/craft.sql",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.221_5555/sdcard/adb-logs/2018-01-01_01_00-ril-9887.txt",
+		"/Users/rv0/Desktop/careto.sql",
+		"/Users/rv0/Documents/QBMT/GIT/hassio-addons/zbos-mqtt-bridge/manifest.json",
+		"/Users/rv0/Documents/QBMT/GIT/hassio-addons/zbos-mqtt-bridge/zbos/manifest.json",
+		"/Users/rv0/Documents/QBMT/GIT/hassio-addons/zbos-mqtt-bridge/repository.json",
+		"/Users/rv0/Documents/QBMT/GIT/hassio-addons/repository/repository.json",
+		"/Users/rv0/Documents/QBMT/GIT/hassio-addons/repository/zbos-mqtt-bridge/config.json",
+		"/Users/rv0/Downloads/views_bootstrap-3072509.patch",
+		"/Users/rv0/Documents/QBMT/GIT/docs/content/manuals/zbos-control.md",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-ascii-manual/Apps/Composer/Manual.adoc",
+		"/Users/rv0/Downloads/plan-19824645-JOB1-410.log",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-67d7.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2019-10-29_16_27-ril-48e5.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2019-10-24_09_21-ril-411e.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2019-09-19_09_43-ril-4677.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-9d77.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-36dc.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-38f8.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-54b4.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-394a.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-641c.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-2499.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-2832.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-3557.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-5895.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-a2c1.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-d9bb.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-df59.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-f0ce.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-f7f1.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-f90a.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads/SH-J02-000437/2018-01-01_01_00-ril-0c6e.txt",
+		"/Users/rv0/PycharmProjects/zbos-firebase/downloads",
+		"/Users/rv0/Downloads/2018-01-01_01_00-ril-2499.txt",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_saved_compositions/_s8cw3oetcr.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_saved_compositions/_sao32e4o0s.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_saved_compositions/_ssiphvxb3l.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_saved_compositions/_ssxunan3f9.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_saved_compositions/_s5po2otaly.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_saved_compositions/_suywp7fgc4.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_kiosk_datasources/kiosk_i3w93se5k.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_kiosk_datasources/kiosk_8veakkvqw.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_kiosk_datasources/kiosk_default.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_kiosk_datasources/_vochpo6xj.json",
+		"/Users/rv0/Documents/AndroidStudio/DeviceExplorer/qualcomm-msm8953_for_arm64-192.168.0.211_5555/sdcard/zbos_kiosk_datasources/_b2ziac289.json",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-ascii-manual/James/Manual.adoc",
+		"/Users/rv0/Downloads/goeroebot-james-export.json",
+		"/Users/rv0/Downloads/StackTrace.txt",
+		"/Users/rv0/Sites/zorabots.be/configuration.php",
+		"/Users/rv0/caretologs/befam.careto.be-01-10-2019",
+		"/Users/rv0/caretologs/befam.careto.be-02-10-2019",
+		"/Users/rv0/caretologs/careto.be-20-09-2019",
+		"/Users/rv0/caretologs/careto.be-Sep-2019",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-ascii-manual/Cruzr/Manual.adoc",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-ascii-manual/Apps/ZBOSControl/Manual.adoc",
+		"/Users/rv0/Documents/QBMT/GIT/launcher/CHANGELOG.md",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_speech.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_social.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_wifi.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_system.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/asyncapi.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_audio.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/readme.md",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/css/main.css",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/index.html",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_camera.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_composer.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_motion.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_motion_detection.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_slam.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_survey.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/asyncapi.inc.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_kiosk.yaml",
+		"/Users/rv0/Documents/QBMT/GIT/zbos-mqtt-asyncapi/_cloud.yaml",
+		"/Users/rv0/Desktop/data.xml",
+		"/Users/rv0/Desktop/demo.html",
+		"/Users/rv0/Sites/careto/composer.json",
+		"/private/etc/apache2/extra/httpd-ssl.conf~previous",
+		"/private/etc/apache2/extra/httpd-vhosts.conf",
+		"/Users/rv0/Documents/QBMT/GIT/launcher/app/src/main/assets/kiosk_json/fallback_james.json",
+		"/Users/rv0/Desktop/translations.json",
+		"/Users/rv0/Documents/QBMT/GIT/docs/config.toml",
+		"/Users/rv0/Library/Mobile Documents/com~apple~CloudDocs/n0nx0x/GIT/n0nx0x2/manual/styles/default.css",
+		"/Users/rv0/Library/Mobile Documents/com~apple~CloudDocs/n0nx0x/GIT/n0nx0x2/manual/manual.adoc",
+		"/Users/rv0/Desktop/bbinstall",
+		"/Users/rv0/Desktop/bbinstalljessie.sh",
+		"/Users/rv0/Desktop/bootconfigBB.txt",
+		"/Users/rv0/Desktop/bootconfigJESSIE.txt",
+		"/Users/rv0/Desktop/bootconfigSTRETCH.txt",
+		"/Volumes/BILLY-BILLY/billy-billy.conf",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Library/TimerOne/TimerOne.cpp",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Library/TimerOne/TimerOne.h",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Yocto Bootloader/cores/standard/Arduino.h",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/.gitignore",
+		"/Users/rv0/Documents/prive/GIT/Yocto_808/Library/MIDI/src/MIDI.hpp",
+		"/Users/rv0/Documents/prive/rv0/n0nx0x/as_hex2syx/main.cpp"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 113.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"temp_step_led",
+			"Update_Pattern_Led",
+			"led",
+			"clock24_count",
+			"Set_Dinsync_Clock_High",
+			"dinsync",
+			"TestTapeTempo"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.astyle_error_message":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.stino_build_panel":
+	{
+		"height": 0.0
+	},
+	"output.stino_panel":
+	{
+		"height": 120.0
+	},
+	"pinned_build_system": "",
+	"project": "Yocto_808.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 277.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
