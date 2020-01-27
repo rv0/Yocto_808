@@ -61,6 +61,8 @@ void loop()
         if (clock_counter > 0) {
             clock_counter--; // Decrement clock_counter. Important!
             Sequencer_Tick();
+            Update_Pattern_EEprom();
+            Update_Pattern_Led();
         }
 
         break;

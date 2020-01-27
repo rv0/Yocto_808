@@ -21,8 +21,6 @@ void Update_Song_EEprom()
 {
 
     //on sauve le song si le old_select_pattern est bien en dessus de 16 et a chaque appuie sur reset ou au changement de song s'il a ete editer
-
-
     if ((old_selected_song < 16) && ((selected_song_changed && selected_song_edited) || (first_push_end && selected_song_edited))) {
         Save_Song();
         //Serial.println("savesong ok");

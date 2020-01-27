@@ -16,9 +16,11 @@ void Sequencer_Tick()
     }
 
     // Optionally reset, then increment counters
+    /*
     if (clock24_count == 24) {
         clock24_count = 0;
     }
+    */
 
     if (sync_mode == MASTER) { // For now, we have master running at 96PPQN, but we don't use it yet.
         if (clock96_count == 96) {
@@ -74,20 +76,21 @@ void Sequencer_Tick()
             }
 
             // Are we at the start of a step? (clock24_count goes from 1 till 24).
-            if ((clock24_count % (pattern_scale[pattern_buffer] / 4)) == 1) {
+            if (clock24_count >= pattern_scale[pattern_buffer] / 4) {
+                clock24_count = 0;
                 step_count++;
 
-                if (step_count >= nbr_step[pattern_buffer]) { // The pattern has ended.
-                    step_count = 0; // Reset the step counter.
+                if (step_count > nbr_step[pattern_buffer]) { // The pattern has ended.
+                    step_count = 1 ; // Reset the step counter.
                     end_measure_flag = true; // The measure has ended.
 
                     //------------------------------------------------ WTF is this???????????????
                     if (load_pattern_ok_flag) { // If the pattern loaded correctly.
                         pattern_buffer = !pattern_buffer; //on switche entre les deux pattern present dans le buffer au debut de la mesure
-                        load_pattern_ok_flag = 0; //reinitialise le flag de load pattern
+                        load_pattern_ok_flag = false; //reinitialise le flag de load pattern
                     }
                 }
-                else if (step_count == (nbr_step[pattern_buffer] - 1)) {
+                else if (step_count == (nbr_step[pattern_buffer])) {
                     middle_mesure_flag = true;
 
                     //MODE PATTERN PLAY--------------------------------------------------------------------------------------------------------
