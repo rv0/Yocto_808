@@ -86,11 +86,17 @@ void loop()
             MIDI.read();
         }
 
+        Mode_Pattern(); // Button readout SR1
+        Check_Edit_Button_Pattern_Edit(); // Button readout SR2
 
-        Check_Edit_Button_Pattern_Edit();
-        Mode_Pattern();
-        Update_Pattern_EEprom();
-        Update_Pattern_Led();
+        // Check if we have advanced 1PPQN.
+        if (clock_counter > 0) {
+            clock_counter--; // Decrement clock_counter. Important!
+            Sequencer_Tick();
+            Update_Pattern_EEprom();
+            Update_Pattern_Led();
+        }
+
         break;
 
     //=================================================
