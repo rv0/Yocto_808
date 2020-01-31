@@ -44,8 +44,8 @@ void Mode_Song_Edit()
     old_step_button_state = reading;
     //-------------------------------------------
 
-    if (button_next && (!first_push_next)) {
-        first_push_next = 1; //flag que l'on vient d'appuyer sur next
+    if (button_next && (!first_push_next_flag)) {
+        first_push_next_flag = 1; //flag que l'on vient d'appuyer sur next
         nbr_pattern_song++;//on incremente la position du song
 
         if (nbr_pattern_song >= MAX_PATTERN_SONG) { // si la position arrive au max de la position
@@ -67,8 +67,8 @@ void Mode_Song_Edit()
 
     //-------------------------------------------
     //ici on enregistre le nbr total de pattern dans le song
-    if (button_end && (!first_push_end)) { //si on appuie sur le bouton end on enregistre le nbr total de pattern qu'il y a dans le song
-        first_push_end = 1; //flag que l'on vient d'appuyer sur end
+    if (button_end && (!first_push_end_flag)) { //si on appuie sur le bouton end on enregistre le nbr total de pattern qu'il y a dans le song
+        first_push_end_flag = 1; //flag que l'on vient d'appuyer sur end
         total_pattern_song[song_buffer] = nbr_pattern_song;
         selected_song_edited = 1; //flag que le song a été édité
     }

@@ -79,14 +79,14 @@ int8_t Read_Encoder()
 }
 
 
-void TapeTempoInit()
+void Init_Tap_Tempo()
 {
     memset(tapTempo, 0, sizeof(tapTempo));
     tap_button_shift = 0;
 }
 
 
-void TestTapeTempo()
+void Read_Tap_Tempo()
 {
     int ct, nbtap, tot;
     int mls;

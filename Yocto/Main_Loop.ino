@@ -5,7 +5,6 @@ void loop()
 
     switch (selected_mode) {
 
-    //================================================
     case PATTERN_MIDI_MASTER:
     case PATTERN_DIN_SLAVE:
     case PATTERN_MIDI_SLAVE:
@@ -18,7 +17,7 @@ void loop()
             switch (selected_mode) {
             case PATTERN_MIDI_MASTER:
                 Set_Sync_Mode(MASTER);
-                TapeTempoInit();
+                Init_Tap_Tempo();
                 break;
 
             case PATTERN_DIN_SLAVE:
@@ -39,13 +38,13 @@ void loop()
         }
 
         // When we switch between modes while playing we don't wanna lose the sync mode.
-        if (first_play) {
+        if (first_play_flag) {
             sync_fallback = sync_mode;
         }
 
         if (sync_mode == MASTER) {
             Check_BPM();
-            TestTapeTempo();
+            Read_Tap_Tempo();
         }
         else if (sync_mode == MIDI_SLAVE) {
             MIDI.read();
@@ -66,13 +65,10 @@ void loop()
         }
 
         break;
-
-    //=================================================
     case PATTERN_EDIT:
 
-        // INIT----------------------------------------
-        if (old_selected_mode != PATTERN_EDIT) {
-            old_selected_mode = PATTERN_EDIT;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
 
             if (!play) {
                 Set_Sync_Mode(sync_fallback);
@@ -86,8 +82,10 @@ void loop()
             MIDI.read();
         }
 
-        Mode_Pattern(); // Button readout SR1
         Check_Edit_Button_Pattern_Edit(); // Button readout SR2
+        Mode_Pattern(); // Button readout SR1
+
+        Verticalize_Pattern(); // Read the changed pattern if needed.
 
         // Check if we have advanced 1PPQN.
         if (clock_counter > 0) {
@@ -99,12 +97,10 @@ void loop()
 
         break;
 
-    //=================================================
     case INIT_EEPROM:
 
-        // INIT----------------------------------------
-        if (old_selected_mode != INIT_EEPROM) {
-            old_selected_mode = INIT_EEPROM;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             Disconnect_Callback();
             Set_Sync_Mode(MIDI_SLAVE);
 
@@ -120,13 +116,11 @@ void loop()
         Play_Version();
         Initialize_EEprom();//initialise les 256 patterns (init. the 256 patterns)
         break;
-
-    //==================================================
+    
     case CLEAR_PATTERN:
 
-        // INIT-----------------------------------------
-        if (old_selected_mode != CLEAR_PATTERN) {
-            old_selected_mode = CLEAR_PATTERN;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             Disconnect_Callback();
             Set_Sync_Mode(MIDI_SLAVE);//mode master synchro
             // flag that we have just reentered the "clear pattern" mode
@@ -153,14 +147,10 @@ void loop()
 
         Clear_Pattern();
         break;
-
-
-    //=================================================
     case COPY_PATTERN:
 
-        // INIT----------------------------------------
-        if (old_selected_mode != COPY_PATTERN) {
-            old_selected_mode = COPY_PATTERN;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             Disconnect_Callback();
             Set_Sync_Mode(MIDI_SLAVE);
             first_time_copy_pattern = 1; //flag que l'on vient de rentrée dans le mode copy pattern
@@ -186,13 +176,10 @@ void loop()
 
         Copy_Pattern();
         break;
-
-    //=================================================
     case PASTE_PATTERN:
 
-        // INIT----------------------------------------
-        if (old_selected_mode != COPY_PATTERN) {
-            old_selected_mode = COPY_PATTERN;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             Disconnect_Callback();
             Set_Sync_Mode(MIDI_SLAVE);//mode master synchro
             first_time_paste_pattern = 1; //flag que l'on vient de rentrée dans le mode paste pattern
@@ -219,12 +206,10 @@ void loop()
         Paste_Pattern();
         break;
 
-    //================================================
     case SONG_EDIT:
 
-        // INIT---------------------------------------
-        if (old_selected_mode != SONG_EDIT) {
-            old_selected_mode = SONG_EDIT;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             Disconnect_Callback();
             Set_Sync_Mode(MASTER);//mode master synchro
 
@@ -235,25 +220,22 @@ void loop()
                 button_play_count = 0;
             }
 
-            //TapeTempoInit();
+            //Init_Tap_Tempo();
         }
 
         Check_BPM();
         // Timer1.initialize(timer_time); // set a timer of length in microseconds
         Check_Edit_Button_Song();
-        //TestTapeTempo();
+        //Read_Tap_Tempo();
         Mode_Song_Edit();
         Update_Pattern_EEprom();
         Update_Song_EEprom();
         Update_Song_Led();
         break;
-
-    //================================================
     case SONG_MIDI_MASTER:
 
-        // INIT---------------------------------------
-        if (old_selected_mode != SONG_MIDI_MASTER) {
-            old_selected_mode = SONG_MIDI_MASTER;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             Disconnect_Callback();
             Set_Sync_Mode(MASTER);//mode master synchro
 
@@ -264,26 +246,23 @@ void loop()
                 button_play_count = 0;
             }
 
-            TapeTempoInit();
+            Init_Tap_Tempo();
 
         }
 
         Check_BPM();
         Check_Edit_Button_Song();
-        TestTapeTempo();
+        Read_Tap_Tempo();
         Update_Song_EEprom();
         Update_Pattern_EEprom();
         Mode_Song_Play();
         Update_Song_Led();
 
         break;
-
-    //================================================
     case SONG_DIN_SLAVE:
 
-        // INIT---------------------------------------
-        if (old_selected_mode != SONG_DIN_SLAVE) {
-            old_selected_mode = SONG_DIN_SLAVE;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             Disconnect_Callback();
             Set_Sync_Mode(DIN_SLAVE);
 
@@ -302,13 +281,10 @@ void loop()
         Update_Song_EEprom();
         Update_Song_Led();
         break;
-
-    //================================================
     case SONG_MIDI_SLAVE:
 
-        // INIT---------------------------------------
-        if (old_selected_mode != SONG_DIN_SLAVE) {
-            old_selected_mode = SONG_DIN_SLAVE;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             Disconnect_Callback();
             Set_Sync_Mode(MIDI_SLAVE);
 
@@ -334,12 +310,10 @@ void loop()
         Update_Song_Led();
         break;
 
-    //================================================
     case MIDI_PLAY:
 
-        // INIT---------------------------------------
-        if (old_selected_mode != MIDI_PLAY) {
-            old_selected_mode = MIDI_PLAY;
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
             PORTC &= ~(B11111100);//clear les edits leds dans ce mode
 
             Disconnect_Callback();
@@ -438,9 +412,8 @@ void loop()
     case EEPROM_DUMP:
         Check_Edit_Button_Setup();
 
-        if (old_selected_mode != EEPROM_DUMP) {
-            old_selected_mode = EEPROM_DUMP;
-            //Serial.println("EEPROM_DUMP");
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
         }
 
         if (button_play) {
@@ -448,13 +421,11 @@ void loop()
         }
 
         break;
-
     case EEPROM_RECEIVE:
         Check_Edit_Button_Setup();
 
-        if (old_selected_mode != EEPROM_RECEIVE) {
-            old_selected_mode = EEPROM_RECEIVE;
-            //Serial.println("EEPROM_RECEIVE");
+        if (old_selected_mode != selected_mode) {
+            old_selected_mode = selected_mode;
         }
 
         while (MIDI.read()) {
@@ -465,7 +436,6 @@ void loop()
 
         SR.Led_Step_Write(0); // Disable the LEDs.
         break;
-
     }
 
 }

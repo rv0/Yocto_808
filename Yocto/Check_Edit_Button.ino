@@ -1,49 +1,58 @@
 // Some helpers for readability.
-#define SR2_BTN_PLAY    1
-#define SR2_BTN_SHIFT   2
+#define BUTTON_PLAY    1
+#define BUTTON_SHIFT   2
 
-#define SR2_BTN_SCALE   4
+#define BUTTONS_SHIFT_PLAY 3
 
-#define SR2_BTN_1732    8 // Button 17-32.
-#define SR2_BTN_ROLL    8
+#define BUTTON_SCALE   4
+#define BUTTON_NEXT    4
 
-#define SR2_BTN_0116    16 // Button 01-16.
-#define SR2_BTN_MUTE    16
+#define BUTTON_1732    8 // Button 17-32.
+#define BUTTON_ROLL    8
+#define BUTTON_END     8
 
-#define SR2_BTN_ENC         32
+#define BUTTON_0116    16 // Button 01-16.
+#define BUTTON_MUTE    16
+#define BUTTON_RESET   16
 
-#define SR2_BTN_ENC_SHIFT   34 // Encoder button + shift.
-#define SR2_BTN_PAT_PART 8 // 16 // 24
+#define BUTTONS_0116_1732  24
+
+#define BUTTON_ENC         32
+
+#define BUTTONS_ENC_SHIFT  34 // Encoder button + shift.
+#define BUTTON_PAT_PART 8 // 16 // 24
 
 
-void Check_Edit_Button_Pattern_Edit()
-{
-    //-----------------------------------------------------
+void Check_Slave_Transport_State() {
     if (sync_mode != MASTER) {
         // check status play in DIN_SYNC mode
         boolean din_start_state = PIND & (1 << 5);
 
         if (din_start_state != old_din_start_state) {
             if (din_start_state) { // DinSync Run signal is HIGH.
-                first_play = 1; // Indicate first play.
+                first_play_flag = 1; // Indicate first play.
                 play = 1;
 
             }
             else if (!din_start_state) { // DinSync Run signal is LOW.
                 play = 0;
-                first_stop = 1;
+                first_stop_flag = 1;
             }
 
             old_din_start_state = din_start_state;
         }
     }
+}
 
-    // read the state of the buttons
-    byte reading = SR.Button_SR_Read(2); //stock l'etat des boutons
+void Check_Edit_Button_Pattern_Edit()
+{
+    Check_Slave_Transport_State(); // Decide on play/stop flags if slaved.
+
+    // Read the state of the buttons.
+    byte reading = SR.Button_SR_Read(2);
 
     if (reading != old_edit_button_state) {
         millis_debounce_edit_button = millis();
-        //Serial.println("ok");
     }
 
     if ((millis() - millis_debounce_edit_button) >= DEBOUNCE) {
@@ -51,138 +60,90 @@ void Check_Edit_Button_Pattern_Edit()
             edit_button_state = reading;
 
             switch (edit_button_state) {
-            //----------------------
-            //check le bouton play
-            case 1: // Play button.
+            case BUTTON_PLAY:
                 if (sync_mode == MASTER) {
                     button_play_count++;
 
                     if (button_play_count == 1) {
                         play = 1;
                         // allow the first step to play
-                        first_play = 1; //permet de jouer le premier pas (cf interrupt)
-                        // second flag of play the first (???)
-                        first_play_A = 1; //un deuxime flag de jouer le premier (cf interrupt)
+                        first_play_flag = 1; //permet de jouer le premier pas (cf interrupt)
                     }
                     else if (button_play_count == 2) {
                         play = 0;
                         button_play_count = 0;
-                        first_stop = 1;
+                        first_stop_flag = 1;
                     }
                 }
-
-                //Serial.println(play,DEC);//DEBUGG
                 break;
 
-            //-------------------------
-            //check bouton scale
-            case 4: // Scale button.
-                // indicates that the scale of the pattern has changed
-                pattern_scale_changed = 1; //indique que la scale du pattern achanger
+            case BUTTON_SCALE:
+                pattern_scale_changed_flag = true;
                 button_scale_count++;
 
                 if (button_scale_count == 4) {
                     button_scale_count = 0;
                 }
 
-                // send the scale corresponding in the variable pattern scale
-                //envoi la scale correspondante dans la variable pattern scale
                 switch (button_scale_count) {
                 case 0:
-                    pattern_scale[pattern_buffer] = 12; // 1/32 de temps
+                    pattern_scale[pattern_buffer] = 12; // 1/32 time.
                     break;
 
                 case 1:
-                    pattern_scale[pattern_buffer] = 24; // 1/16 de temps
+                    pattern_scale[pattern_buffer] = 24; // 1/16 time.
                     break;
 
                 case 2:
-                    pattern_scale[pattern_buffer] = 16; // 1/16t de temps
+                    pattern_scale[pattern_buffer] = 16; // 1/16t time.
                     break;
 
                 case 3:
-                    pattern_scale[pattern_buffer] = 32; // 1/8t de temsp
+                    pattern_scale[pattern_buffer] = 32; // 1/8t time.
                     break;
                 }
-
-                //Serial.println(button_scale_count,DEC);//DEBUGG
                 break;
 
-            //-------------------------
             // check which part is selected - either 1-16 or 17-32
-            //check quel part est selectionner soit 1a16 ou 17a32
-            case 8: // 17..32 button.
-                button_pattern_part = 1; //section 17 a 32 selectionner
+            case BUTTON_1732: // 17..32 button.
+                button_pattern_part = 1;
                 break;
 
-            case 16: // 1..16 button.
-                button_pattern_part = 0; // section 1 a 16 selectionner
+            case BUTTON_0116: // 1..16 button.
+                button_pattern_part = 0;
                 break;
             }
 
             // Both 1..16 and 17..32 buttons are pressed.
-            if (edit_button_state == 24) {
+            if (edit_button_state == BUTTONS_0116_1732) {
                 button_part_switch = !button_part_switch;
             }
 
-            // If both Shift and Encoder button are pressed, button_state is 34.
-
             // Shift button.
-            if (edit_button_state == 2 || edit_button_state == 34) {
-                button_shift = 1;
-            }
-            else {
-                button_shift = 0;
-            }
-
+            button_shift = (edit_button_state == BUTTON_SHIFT || edit_button_state == BUTTONS_ENC_SHIFT);
             // Encoder button.
-            if (edit_button_state == 32 || edit_button_state == 34) {
-                button_encoder = 1;
-            }
-            else {
-                button_encoder = 0;
-            }
+            button_encoder = (edit_button_state == BUTTON_ENC || edit_button_state == BUTTONS_ENC_SHIFT);
 
             // Check if the pattern part is pressed.
-            if (edit_button_state == 8 || edit_button_state == 16 || edit_button_state == 24) {
+            if (edit_button_state == BUTTON_1732 || edit_button_state == BUTTON_0116 || edit_button_state == BUTTONS_0116_1732) {
                 button_pattern_part_pressed = 1;
             }
             else {
                 button_pattern_part_pressed = 0;
             }
-
-            // Serial.println(button_encoder);//DEBUGG
-            //Serial.println(button_init,DEC);//DEBUGG
         }
     }
 
-    // we retain the state of the buttons
-    old_edit_button_state = reading; // on retient l'etat des boutons
+    // Save the state of the buttons.
+    old_edit_button_state = reading;
 }
 
 //=============================================================================
 void Check_Edit_Button_Pattern()
 {
-    //-----------------------------------------------------
-    if (sync_mode != MASTER) {
-        // check the status play in DIN_SYNC mode
-        boolean din_start_state = PIND & (1 << 5);
+    Check_Slave_Transport_State(); // Decide on play/stop flags if slaved.
 
-        if (din_start_state != old_din_start_state) {
-            if (din_start_state) { //si l'entrée DIN Start est HIGH
-                first_play = 1; // indiquer le premier play
-                play = 1;
-
-            }
-            else if (!din_start_state) { //si l'entrée DIN Start est LOW
-                play = 0;
-                first_stop = 1;
-            }
-
-            old_din_start_state = din_start_state;
-        }
-    }
-
+    // Read the state of the buttons.
     byte reading = SR.Button_SR_Read(2);
 
     if (reading != old_edit_button_state) {
@@ -195,34 +156,32 @@ void Check_Edit_Button_Pattern()
 
             // First check the buttons that permanently change state.
             switch (edit_button_state) {
-            case SR2_BTN_PLAY:
+            case BUTTON_PLAY:
                 if (sync_mode == MASTER) {
                     button_play_count++;
 
                     if (button_play_count == 1) {
                         play = 1;
-                        first_play = 1; //permet de jouer le premier pas (cf interrupt)
-                        first_play_A = 1; //un deuxime flag de jouer le premier (cf interrupt)
-                        first_play_C = 1; //idem
+                        first_play_flag = 1; //permet de jouer le premier pas (cf interrupt)
                     }
                     else if (button_play_count == 2) {
                         play = 0;
                         button_play_count = 0;
-                        first_stop = 1;
+                        first_stop_flag = 1;
                     }
                 }
 
                 break;
 
-            case SR2_BTN_SCALE:
+            case BUTTON_SCALE:
                 break;
 
-            case SR2_BTN_ROLL:
+            case BUTTON_ROLL:
                 mute_mode = false;
                 roll_mode = true;
                 break;
 
-            case SR2_BTN_MUTE:
+            case BUTTON_MUTE:
                 if (mute_mode) { // Special case, if already in mute mode, enter solo mode.
                     solo_mode = 0;
                 }
@@ -233,8 +192,8 @@ void Check_Edit_Button_Pattern()
             }
 
             // Next check momentary buttons.
-            button_shift = (edit_button_state == SR2_BTN_SHIFT);
-            button_encoder = (edit_button_state == SR2_BTN_ENC);
+            button_shift = (edit_button_state == BUTTON_SHIFT);
+            button_encoder = (edit_button_state == BUTTON_ENC);
 
             // If shift button is pressed, we exit the mute or roll mode.
             if (button_shift && (mute_mode || roll_mode)) {
@@ -243,91 +202,45 @@ void Check_Edit_Button_Pattern()
         }
     }
 
-    old_edit_button_state = reading; // on retient l'etat des boutons
+    // Save the state of the buttons.
+    old_edit_button_state = reading;
 }
 
 //==================================================================
 void Check_Edit_Button_Setup()
 {
-    byte reading = SR.Button_SR_Read(2); //stock l'etat des boutons
+    // Read the state of the buttons.
+    byte reading = SR.Button_SR_Read(2);
 
     if (reading != old_edit_button_state) {
         millis_debounce_edit_button = millis();
-        //Serial.println("ok");
     }
 
     if ((millis() - millis_debounce_edit_button) >= DEBOUNCE) {
         if (reading != edit_button_state) {
             edit_button_state = reading;
 
-            //-------------------------
-            //Bouton play
-            if (edit_button_state == 1) {
-                button_play = 1;    //bouton play appuyer
-            }
-            else {
-                button_play = 0;    //bouton play relacher
-            }
-
-            //-------------------------
-            //Bouton Shift
-            if (edit_button_state == 2) {
-                button_shift = 1;    //bouton shift appuyer
-            }
-            else {
-                button_shift = 0;    //bouton shift relacher
-            }
-
-            //-------------------------
-            //Check si les boutons play et shift sont apuyer
-            if (edit_button_state == 3) {
-                button_init = 1;    // bouton init correspond au bouton shift et play appuyer
-            }
-            else {
-                button_init = 0;
-            }
-
-            //--------------------
-            //Bouton reset
-            if (edit_button_state == 16) {
-                button_reset = 1;    //bouton shift appuyer
-            }
-            else {
-                button_reset = 0;    //bouton shift relacher
-            }
-
+            // Play button.
+            button_play = (edit_button_state == BUTTON_PLAY);
+            // Shift button.
+            button_shift = (edit_button_state == BUTTON_SHIFT);
+            // Init button.
+            button_init = (edit_button_state == BUTTONS_SHIFT_PLAY);
+            // Reset button.
+            button_reset = (edit_button_state == BUTTON_RESET);
         }
     }
 
-    old_edit_button_state = reading; // on retient l'etat des boutons
+    // Save the state of the buttons.
+    old_edit_button_state = reading;
 }
 
-//==================================================================
 void Check_Edit_Button_Song()
 {
-    //-------------------------------------------------------------------------------------
-    if (selected_mode == 5 || selected_mode == 6) { //le mode selectionne est il SONG_DIN_SLAVe ou SONG_MIDI_SLAVE
-        //Check la statut play en mdoe DIN_SYNC
-        boolean din_start_state = PIND & (1 << 5);
+    Check_Slave_Transport_State(); // Decide on play/stop flags if slaved.
 
-        if (din_start_state != old_din_start_state) {
-            if (din_start_state) { //si l'entrée DIN Start est HIGH
-                first_play = 1; // indiquer le premier play
-                first_play_A = 1; //un deuxime flag de jouer le premier (cf interrupt)
-                first_play_B = 1;
-                play = 1;
-
-            }
-            else if (!din_start_state) { //si l'entrée DIN Start est LOW
-                play = 0;
-                first_stop = 1;
-            }
-
-            old_din_start_state = din_start_state;
-        }
-    }
-
-    byte reading = SR.Button_SR_Read(2); //stock l'etat des boutons
+    // Read the state of the buttons.
+    byte reading = SR.Button_SR_Read(2);
 
     if (reading != old_edit_button_state) {
         millis_debounce_edit_button = millis();
@@ -338,78 +251,52 @@ void Check_Edit_Button_Song()
             edit_button_state = reading;
 
             //---------------------------------------------------------------------------------
-            if (selected_mode == 4 || selected_mode == 7) { //le mode selectionne est il SONG_MIDI_MASTER
+            if (selected_mode == SONG_MIDI_MASTER || selected_mode == SONG_EDIT) { //le mode selectionne est il SONG_MIDI_MASTER
                 switch (edit_button_state) {
-                //----------------------
-                //check le bouton play
-                case 1:
+                case BUTTON_PLAY:
                     button_play_count++;
 
                     if (button_play_count == 1) {
                         play = 1;
-                        first_play = 1; //permet de jouer le premier pas (cf interrupt)
-                        first_play_A = 1; //un deuxime flag de jouer le premier (cf interrupt)
-                        first_play_B = 1;
+                        first_play_flag = 1; //permet de jouer le premier pas (cf interrupt)
                     }
                     else if (button_play_count == 2) {
                         play = 0;
                         button_play_count = 0;
-                        first_stop = 1;
+                        first_stop_flag = 1;
                     }
 
                     break;
                 }
             }
 
-            //--------------------
-            //Bouton Shift
-            if (edit_button_state == 2) {
-                button_shift = 1;    //bouton shift appuyer
+            // Shift button.
+            button_shift = (edit_button_state == BUTTON_SHIFT);
+            // Reset button.
+            button_reset = (edit_button_state == BUTTON_RESET);
+            // Encoder button.
+            button_encoder = (edit_button_state == BUTTON_ENC);
+
+            // Next button.
+            if (edit_button_state == BUTTON_NEXT) {
+                button_next = 1;
             }
             else {
-                button_shift = 0;    //bouton shift relacher
+                button_next = 0;
+                first_push_next_flag = false;
             }
 
-            //--------------------
-            //Bouton Next
-            if (edit_button_state == 4) {
-                button_next = 1; //bouton shift appuyer
+            // End button
+            if (edit_button_state == BUTTON_END) {
+                button_end = 1;
             }
             else {
-                button_next = 0; //bouton shift relacher
-                first_push_next = 0; //flag que le bouton next a été relacher
+                button_end = 0;
+                first_push_end_flag = false;
             }
-
-            //--------------------
-            //Bouton End
-            if (edit_button_state == 8) {
-                button_end = 1; //bouton shift appuyer
-            }
-            else {
-                button_end = 0; //bouton shift relacher
-                first_push_end = 0; //flag que le bouton end a ete relacher
-            }
-
-            //--------------------
-            //Bouton reset
-            if (edit_button_state == 16) {
-                button_reset = 1;    //bouton shift appuyer
-            }
-            else {
-                button_reset = 0;    //bouton shift relacher
-            }
-
-            //Bouton encoder
-            if (edit_button_state == 32) {
-                button_encoder = 1;
-            }
-            else {
-                button_encoder = 0;
-            }
-
         }
     }
 
-    old_edit_button_state = reading; // on retient l'etat des boutons
-    //Serial.println(button_reset);
+    // Save the state of the buttons.
+    old_edit_button_state = reading;
 }

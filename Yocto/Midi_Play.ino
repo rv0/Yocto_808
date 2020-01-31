@@ -99,7 +99,7 @@ void Handle_Start()
 {
     Set_Dinsync_Run_High();
     play = 1;
-    first_play = 1;
+    first_play_flag = 1;
 }
 
 

@@ -1,9 +1,9 @@
 void Sequencer_Tick()
 {
     // Actions to take when playing the first time
-    if (first_play) {
+    if (first_play_flag) {
         // Reset all counters.
-        first_play = step_count = clock24_count = clock96_count = pattern_count = tempo_led_count = 0;
+        first_play_flag = step_count = clock24_count = clock96_count = pattern_count = tempo_led_count = 0;
 
         // Send sync start.
         if (sync_mode != DIN_SLAVE) {
@@ -133,8 +133,8 @@ void Sequencer_Tick()
                 tempo_led_flag = !tempo_led_flag;
             }
 
-            if (first_stop) {
-                first_stop = false;
+            if (first_stop_flag) {
+                first_stop_flag = false;
                 step_count = 0;
 
                 if (sync_mode != MIDI_SLAVE) {

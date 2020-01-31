@@ -67,6 +67,23 @@
 #define DIN_SLAVE 1
 #define MIDI_SLAVE 2
 
+// List the possible selection modes of the mode rotary switch.
+#define PATTERN_MIDI_MASTER 0
+#define PATTERN_DIN_SLAVE   1
+#define PATTERN_MIDI_SLAVE  2
+#define PATTERN_EDIT        3
+#define SONG_MIDI_MASTER    4
+#define SONG_DIN_SLAVE      5
+#define SONG_MIDI_SLAVE     6
+#define SONG_EDIT           7
+#define MIDI_PLAY           8 // Expander
+#define EEPROM_RECEIVE      9 // Receive memory with SysEx
+#define EEPROM_DUMP        10 // Dump memory with SysEx ([Track] on elsmurf case)
+#define INIT_EEPROM        11
+#define CLEAR_SONG         12
+#define CLEAR_PATTERN      13
+#define PASTE_PATTERN      14
+#define COPY_PATTERN       15
 // Helpers for code readability.
 #define PATTERN_PLAY_MODE (selected_mode == PATTERN_MIDI_MASTER || selected_mode == PATTERN_MIDI_SLAVE || selected_mode == PATTERN_DIN_SLAVE)
 #define SONG_PLAY_MODE (selected_mode == SONG_MIDI_MASTER || selected_mode == SONG_MIDI_SLAVE || selected_mode == SONG_DIN_SLAVE)
@@ -110,14 +127,9 @@ boolean play = 0; //variable de l'etat du bouton play en volatile car elle peut 
 //--------------------use in the interrups------------------------------------------//
 //--------------------utiliser dans les interruptions-------------------------------//
 // use to read the first step - indicates that the "prayer loop" after pressing play
-volatile boolean first_play = 0; //Utiliser pour lire le premier pas  indique que c la priere boucle apres l'appuie sur play
-// ? first
-volatile boolean first_play_A = 0; //idem premiere
-volatile boolean first_play_B = 0; //utiliser dans l'interuption pour ne pas switcher le premier load en mode song play
-// used to read the first pattern in a block
-boolean first_play_C = 0; //idem utiliser pour lire le premier pattern dans un block
+volatile boolean first_play_flag = 0; //Utiliser pour lire le premier pas  indique que c la priere boucle apres l'appuie sur play
 // used to initialize one time after a stop like a MIDI stop command
-volatile boolean first_stop = 0; //uriliser pour initaliser UNE FOIS apres un stop comme envoyer les messages MIDI STOP
+volatile boolean first_stop_flag = 0; //uriliser pour initaliser UNE FOIS apres un stop comme envoyer les messages MIDI STOP
 //----------------------------------------------------------------------------------
 // counter of the number of times pressed the play button
 byte button_play_count = 0; //compteur du nombre d'appuie sur le bouton play
@@ -138,10 +150,10 @@ boolean button_encoder = 0; //etat du bouton de l'encoder
 // variable corresponds to the play and shift buttons
 boolean button_init = 0; //variable qui correspond au bouton play et shift
 boolean button_next = 0; //bouton next en mode song
-boolean first_push_next = 0; //flag de l'etat du permier appuie sur next
+boolean first_push_next_flag = 0; //flag de l'etat du permier appuie sur next
 boolean button_reset = 0; //bouton reset en mode song
 boolean button_end = 0; //bouton end en mode song
-boolean first_push_end = 0; //flag de l'etat du premier appuie sur end
+boolean first_push_end_flag = 0; //flag de l'etat du premier appuie sur end
 boolean  old_din_start_state = 2; //variable qui sert achecker le changement de statut de start en DIN_SYNC initialise a 2 pour que le fonction s'effectuer au demarrag
 
 boolean button_part_switch = 1; //variable des deux boutons part appuyer initialise a 1 comme ça au demmarrage les pattern switch automatiquement
@@ -186,7 +198,7 @@ unsigned int inst_step_buffer[32][2] = {
 byte nbr_step[2];//nombre de step par pattern va de 1 à 32 ,une array de deux pour le buffer
 byte pattern_scale[2];//Scale de chaque pattern, array de deux pour le buffer
 boolean nbr_step_changed = 0; //flag que le nbr de pas du pattern a change
-boolean pattern_scale_changed = 0; //flag que la scale du pattern a changer
+boolean pattern_scale_changed_flag = 0; //flag que la scale du pattern a changer
 byte pattern_bank = 0; //variable de la bank selectionner
 boolean load_pattern_ok_flag = 0; //flag que le pattern a bien ete loader
 
