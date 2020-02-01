@@ -98,7 +98,7 @@ void Mode_Song_Edit()
 void Mode_Song_Play()
 {
 
-    Verticalize_Pattern();//cf fonction
+    //Verticalize_Pattern();//cf fonction
 
     if (middle_mesure_flag) {
 

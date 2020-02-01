@@ -232,83 +232,66 @@ void loop()
         Update_Song_EEprom();
         Update_Song_Led();
         break;
+
     case SONG_MIDI_MASTER:
-
-        if (old_selected_mode != selected_mode) {
-            old_selected_mode = selected_mode;
-            Disconnect_Callback();
-            Set_Sync_Mode(MASTER);//mode master synchro
-
-            if (play) {
-                play = 0;
-                MIDI_Send(0xfc);//envoi un stop midi (send a MIDI stop)
-                Set_Dinsync_Run_Low();
-                button_play_count = 0;
-            }
-
-            Init_Tap_Tempo();
-
-        }
-
-        Check_BPM();
-        Check_Edit_Button_Song();
-        Read_Tap_Tempo();
-        Update_Song_EEprom();
-        Update_Pattern_EEprom();
-        Mode_Song_Play();
-        Update_Song_Led();
-
-        break;
     case SONG_DIN_SLAVE:
-
-        if (old_selected_mode != selected_mode) {
-            old_selected_mode = selected_mode;
-            Disconnect_Callback();
-            Set_Sync_Mode(DIN_SLAVE);
-
-            if (play) {
-                play = 0;
-                MIDI_Send(0xfc);//envoi un stop midi (send a MIDI stop)
-                Set_Dinsync_Run_Low();
-                button_play_count = 0;
-            }
-        }
-
-        //Check_BPM();
-        Check_Edit_Button_Song();
-        Mode_Song_Play();
-        Update_Pattern_EEprom();
-        Update_Song_EEprom();
-        Update_Song_Led();
-        break;
     case SONG_MIDI_SLAVE:
-
-        if (old_selected_mode != selected_mode) {
+        // Check if the selected mode changed.
+        if (!play && old_selected_mode != selected_mode) {
             old_selected_mode = selected_mode;
             Disconnect_Callback();
-            Set_Sync_Mode(MIDI_SLAVE);
 
-            if (play) {
-                play = 0;
-                MIDI_Send(0xfc);//envoi un stop midi
-                Set_Dinsync_Run_Low();
-                button_play_count = 0;
+            switch (selected_mode) {
+            case SONG_MIDI_MASTER:
+                Set_Sync_Mode(MASTER);
+                Init_Tap_Tempo();
+                break;
+
+            case SONG_DIN_SLAVE:
+                Set_Sync_Mode(DIN_SLAVE);
+                break;
+
+            case SONG_MIDI_SLAVE:
+                Set_Sync_Mode(MIDI_SLAVE);
+                MIDI.setHandleClock(Handle_Clock);    // Callback Clock MIDI
+                MIDI.setHandleStart(Handle_Start);    // Callback Start MIDI
+                MIDI.setHandleContinue(Handle_Start); // Callback Continue MIDI
+                MIDI.setHandleStop(Handle_Stop);      // Callback Stop MIDI
+                break;
             }
 
-            MIDI.setHandleClock(Handle_Clock);// Callback Clock MIDI
-            MIDI.setHandleStart(Handle_Start);// Callback Start MIDI
-            MIDI.setHandleContinue(Handle_Start);// Callback Stop MIDI
-            MIDI.setHandleStop(Handle_Stop);// Callback Stop MIDI
+            mute_mode = 0;
+            muted_instruments = 0;
         }
 
-        //Check_BPM();
-        MIDI.read();
-        Check_Edit_Button_Song();
-        Mode_Song_Play();
-        Update_Pattern_EEprom();
-        Update_Song_EEprom();
-        Update_Song_Led();
-        break;
+        // When we switch between modes while playing we don't wanna lose the sync mode.
+        if (first_play_flag) {
+            sync_fallback = sync_mode;
+        }
+
+        if (sync_mode == MASTER) {
+            Check_BPM();
+            Read_Tap_Tempo();
+        }
+        else if (sync_mode == MIDI_SLAVE) {
+            MIDI.read();
+        }
+
+        Mode_Pattern(); // Button readout SR1
+        Check_Edit_Button_Song(); // Button readout SR2
+        Check_Roll_Scale(); // Encoder readout
+
+        Verticalize_Pattern(); // Read the changed pattern if needed.
+
+        // Check if we have advanced 1PPQN.
+        if (clock_counter > 0) {
+            clock_counter--; // Decrement clock_counter. Important!
+            Update_Song_EEprom();
+            Update_Pattern_EEprom();
+            Mode_Song_Play();
+
+            Update_Song_Led();
+        }
 
     case MIDI_PLAY:
 
