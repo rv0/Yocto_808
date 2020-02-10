@@ -20,7 +20,6 @@
 #define BUTTON_ENC         32
 
 #define BUTTONS_ENC_SHIFT  34 // Encoder button + shift.
-#define BUTTON_PAT_PART 8 // 16 // 24
 
 
 void Check_Slave_Transport_State() {
@@ -120,12 +119,26 @@ void Check_Edit_Button_Pattern_Edit()
             }
 
             // Shift button.
-            button_shift = (edit_button_state == BUTTON_SHIFT || edit_button_state == BUTTONS_ENC_SHIFT);
+            //button_shift = (edit_button_state == BUTTON_SHIFT) || (edit_button_state == BUTTONS_ENC_SHIFT);
             // Encoder button.
-            button_encoder = (edit_button_state == BUTTON_ENC || edit_button_state == BUTTONS_ENC_SHIFT);
+            //button_encoder = (edit_button_state == BUTTON_ENC) || (edit_button_state == BUTTONS_ENC_SHIFT);
+            // Shift button.
+            if (edit_button_state == 2 || edit_button_state == 34) {
+                button_shift = 1;
+            }
+            else {
+                button_shift = 0;
+            }
 
+            // Encoder button.
+            if (edit_button_state == 32 || edit_button_state == 34) {
+                button_encoder = 1;
+            }
+            else {
+                button_encoder = 0;
+            }
             // Check if the pattern part is pressed.
-            if (edit_button_state == BUTTON_1732 || edit_button_state == BUTTON_0116 || edit_button_state == BUTTONS_0116_1732) {
+            if ((edit_button_state == BUTTON_1732) || (edit_button_state == BUTTON_0116) || (edit_button_state == BUTTONS_0116_1732)) {
                 button_pattern_part_pressed = 1;
             }
             else {

@@ -108,6 +108,8 @@ byte selected_inst; //variable de l'instrument selectioner cf Check_rotary_switc
 byte selected_mode; //variable du mode selectionner
 byte old_selected_mode = 17;/*variable qui permet d'indiquer qu'on a change de mode initialise a un mode qui n'existe pas pour pouvoir rentree dans n'importe que
  mode*/
+boolean mode_changed = true; // Keeps track of whether the mode changed or not.
+
 boolean first_time_clear_pattern = 0; //flag que l'on vient de rentrée dans le mode clear pattern
 boolean first_time_copy_pattern = 0; //flag que l'on vient de rentrée dans le mode copy pattern
 boolean first_time_paste_pattern = 0; //flag que l'on vient de rentrée dans le mode paste pattern
@@ -147,6 +149,7 @@ boolean button_shift = 0; // etat du bouton shift//variable qui serve a checker 
 boolean last_button_shift = 0;
 // state of the encoder button
 boolean button_encoder = 0; //etat du bouton de l'encoder
+boolean last_button_encoder = 0;
 // variable corresponds to the play and shift buttons
 boolean button_init = 0; //variable qui correspond au bouton play et shift
 boolean button_next = 0; //bouton next en mode song
@@ -161,7 +164,7 @@ boolean button_part_switch = 1; //variable des deux boutons part appuyer initial
 
 volatile byte clock_counter = 0; // Counter that may never get > 1.
 byte clock96_count = 0;
-byte clock24_count = 0;
+byte clock24_count = 0; // Goes from 1 to 24.
 byte ticked = 0;
 
 
@@ -191,7 +194,7 @@ boolean pattern_copy_ok = 0; //le pattern selectionner n'a pas été copier
 volatile boolean selected_pattern_changed = 1; //indique si le pattern selectionner a  change
 boolean selected_pattern_changed_A = 0; //indique si le pattern selectionner a  change
 boolean selected_pattern_edited = 0; //indique que le pattern a ete edite
-boolean selected_pattern_edited_saved = 0; //indique que le pattern a ete edite et sauver
+boolean selected_pattern_edited_saved_flag = 0; //indique que le pattern a ete edite et sauver
 unsigned int inst_step_buffer[32][2] = {
     0
 };//Array de l'etat de chaque pas du sequenceur *2 pour deux buffer
@@ -339,14 +342,15 @@ void setup()
     //initialise les parametre du sequenceur
     bpm = 480; //BPM reel = bpm/4
 
-    //uint8_t counter
     timer_time = ((unsigned int)(TEMPO_COEFF / bpm));
     Timer1.initialize(timer_time); // set a timer of length in microseconds
     // Timer for Dinsync clock generation.
     Timer3.initialize(16000000 / 4800); // F_CPU/CLOCK_TIMER_FREQ
 
     // Initialise serial connection for debugger.
-    //Serial.begin(115200);
+    if (DEBUG) {
+        //Serial.begin(115200);
+    }
 
     // Midi
     MIDI.begin(MIDI_CHANNEL_OMNI);

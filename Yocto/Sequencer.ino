@@ -75,8 +75,9 @@ void Sequencer_Tick()
                 tempo_led_flag = true;
             }
 
-            // Are we at the start of a step? (clock24_count goes from 1 till 24).
+            // Are we at the start of a step?
             if (clock24_count >= pattern_scale[pattern_buffer] / 4) {
+                step_changed = 1;
                 clock24_count = 0;
                 step_count++;
 
@@ -119,6 +120,9 @@ void Sequencer_Tick()
 
                 SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count - 1][pattern_buffer]) & (~muted_instruments) | inst_roll));
                 Send_Trig_Out((inst_step_buffer[step_count - 1][pattern_buffer]) & (~muted_instruments) | inst_roll);
+            }
+            else {
+                step_changed = 0;
             }
 
             Update_Pattern_Led(); // Update the LEDs.

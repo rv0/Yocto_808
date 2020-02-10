@@ -2,9 +2,9 @@ void Update_Pattern_EEprom()
 {
 
     //si le pattern a ete editer ou son nbr de step et qu'on est en STOP on sauve la pattern ou si on reviens dans le mode precedent
-    if ((selected_pattern_edited_saved == 1 || nbr_step_changed == 1 || pattern_scale_changed_flag == 1) && (!play || selected_mode == old_selected_mode)) {
+    if ((selected_pattern_edited_saved_flag == 1 || nbr_step_changed == 1 || pattern_scale_changed_flag == 1) && (!play || selected_mode == old_selected_mode)) {
         Save_Pattern();
-        selected_pattern_edited_saved = 0; //reset le flag que le pattern a ete editer
+        selected_pattern_edited_saved_flag = 0; //reset le flag que le pattern a ete editer
         nbr_step_changed = 0; //reset le flag que le nbr de step a change
         pattern_scale_changed_flag = 0; //reset le flag que la scale a change
     }

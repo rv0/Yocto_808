@@ -91,8 +91,8 @@ void Read_Tap_Tempo()
     int ct, nbtap, tot;
     int mls;
 
-    if (!mute_mode) {
-        if (button_encoder == 1 && tap_button_shift == 0) {
+    if (!mute_mode && !button_shift) {
+        if (button_encoder == 1 && (last_button_encoder != button_encoder) && tap_button_shift == 0) {
             tap_button_shift = 1;
 
             for (ct = TAPTEMPO_MAX - 1; ct > 0; ct--) {
