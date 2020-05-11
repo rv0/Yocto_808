@@ -62,13 +62,13 @@ void loop()
         Check_Roll_Scale(); // Encoder readout
 
         Verticalize_Pattern(); // Read the changed pattern if needed.
+        Update_Pattern_EEprom();
+        Update_Pattern_Led();
 
         // Check if we have advanced 1PPQN.
         if (clock_counter > 0) {
             clock_counter--; // Decrement clock_counter. Important!
             Sequencer_Tick();
-            Update_Pattern_EEprom();
-            Update_Pattern_Led();
         }
 
         break;
@@ -311,9 +311,9 @@ void loop()
 
             //initialise les leds suivant le channel selectionner et les sortie des instru a 0
             Load_Midi_Channel();
-            temp_step_led = (1 << selected_channel);
+            step_leds = (1 << selected_channel);
             MIDI.setInputChannel(selected_channel + 1);
-            SR.ShiftOut_Update(temp_step_led, 0);
+            SR.ShiftOut_Update(step_leds, 0);
 
             for (int ct = 0; ct < 12; ct++) {
                 noteOnOff[ct] = 0;
@@ -328,7 +328,7 @@ void loop()
 
         if (selected_channel_changed) {
             MIDI.setInputChannel(selected_channel + 1);
-            SR.ShiftOut_Update(temp_step_led, 0);
+            SR.ShiftOut_Update(step_leds, 0);
             Save_Midi_Channel();
             selected_channel_changed = 0;
         }
@@ -348,7 +348,7 @@ void loop()
 
             if (midi_trig_pulse_count == 0) {
                 Reset_Trig_Out();
-                SR.ShiftOut_Update(temp_step_led, 0);
+                SR.ShiftOut_Update(step_leds, 0);
             }
         }
 
@@ -373,7 +373,7 @@ void loop()
         // envelopes of the instruments. The instrument trigger must remain high
         // until the monostable pulse inside the Accent circuit is done.
         //
-        SR.ShiftOut_Update(temp_step_led, inst_midi_buffer);
+        SR.ShiftOut_Update(step_leds, inst_midi_buffer);
 
         Set_CPU_Trig_High();
         delayMicroseconds(10);

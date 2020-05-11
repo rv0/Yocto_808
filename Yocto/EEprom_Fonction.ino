@@ -681,10 +681,10 @@ void Dump_EEprom()
         for (int x = 0; x < PTRN_NB; x++) { // Loop over all patterns
             byte pattern[PTRN_POSITION_BYTE + PTRN_SIZE_BYTE + PTRN_SETUP_SIZE_BYTE]; // This will hold the pattern data.
 
-            temp_step_led = 0;
-            temp_step_led |= 1 << (x / 16); // Show the current bank position on the LEDs.
-            temp_step_led |= 1 << (x % 16); // Show the current pattern position on the LEDs.
-            SR.Led_Step_Write(temp_step_led);
+            step_leds = 0;
+            step_leds |= 1 << (x / 16); // Show the current bank position on the LEDs.
+            step_leds |= 1 << (x % 16); // Show the current pattern position on the LEDs.
+            SR.Led_Step_Write(step_leds);
 
             // First add the pattern position.
             pattern[0] = x;
@@ -754,7 +754,7 @@ void Receive_EEprom(const byte* sysex, unsigned size)
         if (sysex[4] == 0x03) { // Pattern data.
             byte pattern_data[PTRN_POSITION_BYTE + PTRN_SIZE_BYTE + PTRN_SETUP_SIZE_BYTE];
             int decode_size = 77; // @See encodeSysEx in Dump_EEprom.
-            temp_step_led = 0; // Variable for LEDs.
+            step_leds = 0; // Variable for LEDs.
             unsigned int length = midi::decodeSysEx(&sysex[5], pattern_data, decode_size);
 
             // Calculate CRC-8 checksum, constricted to 7 bits.
@@ -764,9 +764,9 @@ void Receive_EEprom(const byte* sysex, unsigned size)
             // Only continue if the checksum matches. 82 = 5 (header) + 77 (encoded data).
             if (checksum == sysex[82]) {
 
-                temp_step_led |= 1 << (pattern_data[0] / 16); // Show the current bank position on the LEDs.
-                temp_step_led |= 1 << (pattern_data[0] % 16); // Show the current pattern position on the LEDs.
-                SR.Led_Step_Write(temp_step_led);
+                step_leds |= 1 << (pattern_data[0] / 16); // Show the current bank position on the LEDs.
+                step_leds |= 1 << (pattern_data[0] % 16); // Show the current pattern position on the LEDs.
+                SR.Led_Step_Write(step_leds);
 
                 // Write pattern steps to memory.
                 unsigned int address = OFFSET_PATTERN + pattern_data[0] * PTRN_SIZE_BYTE; // pattern_data[0] is the pattern number 0..255.
@@ -871,11 +871,11 @@ void Play_Version()
         while (count < major_version) {
             PORTC |= (1 << 7);
             Set_CPU_Trig_High();
-            SR.ShiftOut_Update(temp_step_led, 0b10);
+            SR.ShiftOut_Update(step_leds, 0b10);
             delay(200);
             PORTC &= ~(1 << 7);
             Set_CPU_Trig_Low();
-            SR.ShiftOut_Update(temp_step_led, 0);
+            SR.ShiftOut_Update(step_leds, 0);
             delay(100);
             count++;
         }
@@ -885,11 +885,11 @@ void Play_Version()
         while (count < minor_version) {
             PORTC |= (1 << 6);
             Set_CPU_Trig_High();
-            SR.ShiftOut_Update(temp_step_led, 0b10000000);
+            SR.ShiftOut_Update(step_leds, 0b10000000);
             delay(200);
             PORTC &= ~(1 << 6);
             Set_CPU_Trig_Low();
-            SR.ShiftOut_Update(temp_step_led, 0);
+            SR.ShiftOut_Update(step_leds, 0);
             delay(100);
             count++;
         }

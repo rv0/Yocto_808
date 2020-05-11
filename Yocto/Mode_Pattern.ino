@@ -256,11 +256,11 @@ void Mode_Pattern()
                 }
                 else {
                     // Clear only the steps that are playing.
-                    if (step_count <= 16) {
+                    if (step_count < 16) {
                         bitClear(pattern[pattern_buffer][selected_inst][0], step_count);
                     }
-                    else if (step_count > 16) {
-                        bitClear(pattern[pattern_buffer][selected_inst][1], step_count - 16);
+                    else if (step_count >= 16) {
+                        bitClear(pattern[pattern_buffer][selected_inst][1], step_count);
                     }
                 }
             }
@@ -292,11 +292,11 @@ void Mode_Pattern()
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 // Check if we can place the note on the current step:
                 if (clock24_count % (pattern_scale[pattern_buffer] / 4) < (int)(pattern_scale[pattern_buffer] / 8)) {
-                    if (step_count <= 16) {
-                        bitSet(pattern[pattern_buffer][selected_inst][0], step_count - 1);
+                    if (step_count < 16) {
+                        bitSet(pattern[pattern_buffer][selected_inst][0], step_count);
                     }
                     else {
-                        bitSet(pattern[pattern_buffer][selected_inst][1], step_count - 17);
+                        bitSet(pattern[pattern_buffer][selected_inst][1], step_count - 16);
                     }
                     // Play the sound.
                     SR.Inst_Send(1 << selected_inst);

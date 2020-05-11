@@ -165,7 +165,7 @@ boolean button_part_switch = 1; //variable des deux boutons part appuyer initial
 volatile byte clock_counter = 0; // Counter that may never get > 1.
 byte clock96_count = 0;
 byte clock24_count = 0; // Goes from 1 to 24.
-byte ticked = 0;
+boolean ticked = false;
 
 
 // variables which serve to check the step buttons
@@ -214,7 +214,7 @@ byte nbr_pattern_block = 0; //Nombre de pattern dans le block
 boolean nbr_pattern_block_changed = 0; //flag que le nombre de block a change
 volatile boolean nbr_pattern_block_changed_A = 0; //flag que le nombre de block a change utiliser dans l'interuption
 
-volatile byte pattern_count = 0; //utiliser dans les interruption pour faire avance les pattern en mode song ou quand un block de pattern est selectionner
+byte pattern_count = 0; //utiliser dans les interruption pour faire avance les pattern en mode song ou quand un block de pattern est selectionner
 
 //Variable du song
 //====================================================
@@ -236,9 +236,9 @@ boolean load_song_ok = 0; //flag que le song a ete loader dans le buffer
 
 //variable du timer et de l interuption sur PCINT3
 //====================================================
-boolean tempo_led_flag = 0; //flag de la led qui clignote suivant le tempo. Depend si PLay ou pas
+boolean tempo_led_flag = false; // Flag that controls the tempo-based blinking of the LEDs.
 boolean tempo_led_flag_block = 0; //flag qui fait clignoter la led du pattern selectionner au tempo quand un block est selectionner en play
-byte tempo_led_count = 0; //incrementer dans le timer a 24ppqn
+//byte tempo_led_count = 0; //incrementer dans le timer a 24ppqn
 byte step_count = 0; //compteur de pas
 boolean step_changed = 0; //flag que le pas a change
 volatile boolean end_measure_flag = 0; //indique qu'on est passe a la mesure suivante, utiliser dans le mode song play pour faire incrementer le compteur
@@ -250,13 +250,13 @@ volatile unsigned int dinsync_first_clock_timeout = 0;
 unsigned long millis_debounce_step_button, millis_debounce_edit_button = 0; //variable pour le temps de debounce des boutons
 
 //Variable des step leds
-unsigned int temp_step_led;//valeur des led de step
+unsigned int step_leds; //valeur des led de step
 
-//Variable du mute mode et roll mode
-boolean roll_mode = 0; //statut du roll mode
-boolean mute_mode = 0; //variable qui indique si on est ou pas dans le mute mode
-boolean solo_mode = 0; //solo mode 1 =active 0=desactive
-unsigned int inst_roll = 0; //retiens si un instrument et roller ou pas sur un mot de 16bit chaque bit correspond au mute de chaque instruments
+// Roll and mute mode variables.
+boolean roll_mode = 0; // Roll mode flag.
+boolean mute_mode = 0; // Mute mode flag.
+boolean solo_mode = 0; // Solo mode flag.
+unsigned int inst_roll = 0; // The instruments that are currently rolling in a 16bit word.
 byte roll_pointer = 0; //incementer par l'encoder en mode roll
 byte roll_scale[2][4] = {
     {

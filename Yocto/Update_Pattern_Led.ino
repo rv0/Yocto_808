@@ -50,30 +50,30 @@ void Update_Pattern_Led()
 
             // Make the MUTE LED blink while in mute mode.
             if (mute_mode) {
-                temp_step_led = (inst_step_buffer[step_count - 1][pattern_buffer] * tempo_led_flag) | muted_instruments;
+                step_leds = (inst_step_buffer[step_count][pattern_buffer] * tempo_led_flag) | muted_instruments;
                 PORTC = (1 * !tempo_led_flag) << 7;
             }
             // Make the ROLL LED blink while in roll mode.
             else if (roll_mode) {
                 // Blink the roll led in roll mode.
-                temp_step_led = (inst_step_buffer[step_count - 1][pattern_buffer] * tempo_led_flag) | inst_roll;
+                step_leds = (inst_step_buffer[step_count][pattern_buffer] * tempo_led_flag) | inst_roll;
                 PORTC = (1 * !tempo_led_flag) << 6;
             }
             // Bank selection mode.
             else if (button_shift) {
                 // Bank selection.
-                temp_step_led = (1 << pattern_bank ^ tempo_led_flag << (step_count - 1)); // Show the current selected bank.
+                step_leds = (1 << pattern_bank ^ tempo_led_flag << (step_count)); // Show the current selected bank.
                 PORTC = B11111100; // Light up all non-step leds to show we are in bank selection.
             }
             // Normal mode.
             else {
                 // If only a single pattern is selected, blink it and animate running lights.
                 if (last_selected_pattern == 255) {
-                    temp_step_led = (1 << selected_pattern ^ tempo_led_flag << (step_count - 1));
+                    step_leds = (1 << selected_pattern ^ tempo_led_flag << (step_count));
                 }
                 // If multiple patterns are selected, light up their leds too.
                 else {
-                    temp_step_led = (((1 * tempo_led_flag_block) << selected_pattern) ^ (tempo_led_flag << ((step_count - 1) % 16)) ^ (temp_led_block ^ temp_led_pattern));
+                    step_leds = (((1 * tempo_led_flag_block) << selected_pattern) ^ (tempo_led_flag << ((step_count) % 16)) ^ (temp_led_block ^ temp_led_pattern));
                 }
                 PORTC = (1 << (button_scale_count + 2)) + (1 << (!button_pattern_part + 6));
             }
@@ -83,27 +83,27 @@ void Update_Pattern_Led()
 
             // Make the MUTE LED blink while in mute mode.
             if (mute_mode) {
-                temp_step_led = muted_instruments;
+                step_leds = muted_instruments;
                 PORTC = (1 * !tempo_led_flag) << 7;
             }
             // Make the ROLL LED blink while in roll mode.
             else if (roll_mode) {
-                temp_step_led = inst_roll;
+                step_leds = inst_roll;
                 PORTC = (1 * !tempo_led_flag) << 6;
             }
             // Bank selection mode.
             else if (button_shift) {
-                temp_step_led = (1 << pattern_bank); // Show the current selected bank.
+                step_leds = (1 << pattern_bank); // Show the current selected bank.
                 PORTC = B11111100; // Light up all non-step leds to show we are in bank selection.
             }
             else {
                 // If only a single pattern is selected, blink it.
                 if (last_selected_pattern == 255) {
-                    temp_step_led = ((1 * tempo_led_flag << selected_pattern));
+                    step_leds = ((1 * tempo_led_flag << selected_pattern));
                 }
                 // If multiple patterns are selected, light up their leds too.
                 else {
-                    temp_step_led = ((1 * tempo_led_flag << selected_pattern) ^ (temp_led_block ^ temp_led_pattern));
+                    step_leds = ((1 * tempo_led_flag << selected_pattern) ^ (temp_led_block ^ temp_led_pattern));
                 }
                 PORTC = (1 << button_scale_count + 2) + (1 << !button_pattern_part + 6);
             }
@@ -146,23 +146,24 @@ void Update_Pattern_Led()
 
         if (play) {
             if (button_pattern_part == 0) { //si la parti 1 a 16 est selectionner
-                temp_step_led = (pattern[pattern_buffer][selected_inst][0] ^ tempo_led_flag << (step_count - 1));
+                step_leds = (pattern[pattern_buffer][selected_inst][0] ^ tempo_led_flag << (step_count));
             }
             else if (step_count > 16 && button_pattern_part == 1) { //si la parti 17 a 32 est selectionner et que le compteur step est superieur ou egale a 16
-                temp_step_led = (pattern[pattern_buffer][selected_inst][1] ^ tempo_led_flag << (step_count - 1) - 16);
+                step_leds = (pattern[pattern_buffer][selected_inst][1] ^ tempo_led_flag << (step_count) - 16);
             }
             else if (step_count <= 16 & button_pattern_part == 1) { //si la parti 17 a 32 est selectionner et que le compteur step est inferieur  a 16
-                temp_step_led = (pattern[pattern_buffer][selected_inst][1]);
+                step_leds = (pattern[pattern_buffer][selected_inst][1]);
             }
         }
         else if (!play) {
             if (button_shift) {
-                temp_step_led = (1 << pattern_bank);
+                step_leds = (1 << pattern_bank);
                 PORTC = B11111100; //allumer toutes leds pour indiquer qu'on selectionne la bank
             }
             else if (!button_shift) {
-                temp_step_led = (1 * tempo_led_flag << (selected_pattern));
+                step_leds = (1 * tempo_led_flag << (selected_pattern));
             }
         }
     }
+
 }

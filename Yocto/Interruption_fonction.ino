@@ -43,8 +43,3 @@ ISR(PCINT3_vect)
 {
     clock_counter++;
 }
-
-void MIDI_Send(byte OutByte)
-{
-    Serial1.write(OutByte);
-}

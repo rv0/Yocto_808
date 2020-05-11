@@ -133,7 +133,7 @@ void Check_Midi_Channel()
                         //on retourne la valeur du pattern selectionner
                         selected_channel = i;
                         selected_channel_changed = 1;//flag que le pattern selectionner a change
-                        temp_step_led = (1 << selected_channel);
+                        step_leds = (1 << selected_channel);
                         break;
                     }
                 }
@@ -153,7 +153,7 @@ void Disconnect_Callback()
     DDRB |= B111;// les trois sorties TRIG  CPU,1 et 2
     DDRD |= (1<<6);//sortie trig out
     inst_midi_buffer=0;
-    SR.ShiftOut_Update(temp_step_led,inst_midi_buffer);
+    SR.ShiftOut_Update(step_leds,inst_midi_buffer);
     Set_CPU_Trig_Low();
     */
     PORTC &= ~(B11111100);//clear les edits leds dans ce mode
@@ -163,3 +163,9 @@ void Disconnect_Callback()
     MIDI.disconnectCallbackFromType(midi::Start);
     MIDI.disconnectCallbackFromType(midi::Stop);
 }
+
+void MIDI_Send(byte OutByte)
+{
+    Serial1.write(OutByte);
+}
+
