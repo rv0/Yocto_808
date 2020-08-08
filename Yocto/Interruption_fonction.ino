@@ -21,31 +21,135 @@ void MIDI_noteOff(int cmd, int pitch, int velocity) {
 
 void Send_ExtNoteOn()
 {
+  // Set accent flag.
+  byte velocity = 0x50; // 80
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),AC)) {
+    velocity = 0x6E; // 110
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),BD)) {
+    MIDI_noteOn(0x99, 0x23, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),SN)) {
+    MIDI_noteOn(0x99, 0x26, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),LT)) {
+    MIDI_noteOn(0x99, 0x29, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),MT)) {
+    MIDI_noteOn(0x99, 0x2D, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),HT)) {
+    MIDI_noteOn(0x99, 0x30, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),RM)) {
+    MIDI_noteOn(0x99, 0x25, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),HC)) {
+    MIDI_noteOn(0x99, 0x27, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CW)) {  // Crash Cymbal.
+    MIDI_noteOn(0x99, 0x31, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CY)) {
+    MIDI_noteOn(0x99, 0x33, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),OH)) {
+    MIDI_noteOn(0x99, 0x2E, velocity);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CH)) {
+    MIDI_noteOn(0x99, 0x2A, velocity);
+  }
+
+  // Bonus: VOLCA SAMPLE.
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG1)) {
     MIDI_noteOn(0x90, 0x29, 0x6b);
   }
+
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG2)) {
     MIDI_noteOn(0x91, 0x2b, 0x6b);
   }
+
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG3)) {
     MIDI_noteOn(0x92, 0x2d, 0x6b);
   }
+
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),EXT1)) {
     MIDI_noteOn(0x93, 0x2f, 0x6b);
   }
+
 }
 
 void Send_ExtNoteOff()
 {
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),BD)) {
+    MIDI_noteOff(0x89, 0x23, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),SN)) {
+    MIDI_noteOff(0x89, 0x26, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),LT)) {
+    MIDI_noteOff(0x89, 0x29, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),MT)) {
+    MIDI_noteOff(0x89, 0x2D, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),HT)) {
+    MIDI_noteOff(0x89, 0x30, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),RM)) {
+    MIDI_noteOff(0x89, 0x25, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),HC)) {
+    MIDI_noteOff(0x89, 0x27, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CW)) {  // Crash Cymbal.
+    MIDI_noteOff(0x89, 0x31, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CY)) {
+    MIDI_noteOff(0x89, 0x33, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),OH)) {
+    MIDI_noteOff(0x89, 0x2E, 0x45);
+  }
+
+  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CH)) {
+    MIDI_noteOff(0x89, 0x2A, 0x45);
+  }
+
+  // Bonus: VOLCA SAMPLE.
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG1)) {
     MIDI_noteOff(0x80, 0x29, 0x45);
   }
+
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG2)) {
     MIDI_noteOff(0x81, 0x2b, 0x45);
   }
+
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG3)) {
     MIDI_noteOff(0x82, 0x2d, 0x45);
   }
+  
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),EXT1)) {
     MIDI_noteOff(0x83, 0x2f, 0x45);
   }
