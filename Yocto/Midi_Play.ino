@@ -130,6 +130,7 @@ void Handle_Clock()
         step_changed = 0;
         SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count][pattern_buffer]) & (~inst_mute) | inst_roll));
         Send_Trig_Out((inst_step_buffer[step_count][pattern_buffer]) & (~inst_mute) | inst_roll);
+        Send_ExtNoteOn();
         Set_CPU_Trig_High();
     }
     else {
@@ -140,6 +141,7 @@ void Handle_Clock()
         //MODE ROLL
         if (roll_mode && ppqn_count % (roll_scale[scale_type][roll_pointer] / 4) == 0 && inst_roll > 0) {
             Send_Trig_Out(inst_roll);
+            Send_ExtNoteOn();
             Set_CPU_Trig_High();
         }
     }
@@ -166,6 +168,7 @@ void Handle_Clock()
             first_play = 0; // Re-initialize the flag.
             SR.ShiftOut_Update(temp_step_led, ((inst_step_buffer[step_count][pattern_buffer]) & (~inst_mute) | inst_roll));
             Send_Trig_Out((inst_step_buffer[step_count][pattern_buffer]) & (~inst_mute) | inst_roll);
+            Send_ExtNoteOn();
             Set_CPU_Trig_High();
         }
 

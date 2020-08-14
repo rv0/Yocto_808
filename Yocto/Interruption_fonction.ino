@@ -316,6 +316,7 @@ ISR(PCINT3_vect)
             //MODE ROLL
             if (roll_mode && ppqn_count % (roll_scale[scale_type][roll_pointer] / 4) == 0 && inst_roll > 0) {
                 Send_Trig_Out(inst_roll);
+                Send_ExtNoteOn();
                 Set_CPU_Trig_High();
             }
         }
