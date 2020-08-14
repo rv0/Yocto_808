@@ -30,130 +30,82 @@ void Send_ExtNoteOn()
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),BD) || bitRead(inst_roll, BD)) {
     MIDI_noteOn(0x99, 0x23, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),SN) || bitRead(inst_roll, SN)) {
-    MIDI_noteOn(0x99, 0x26, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),LT) || bitRead(inst_roll, LT)) {
-    MIDI_noteOn(0x99, 0x29, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),MT) || bitRead(inst_roll, MT)) {
-    MIDI_noteOn(0x99, 0x2D, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),HT) || bitRead(inst_roll, HT)) {
-    MIDI_noteOn(0x99, 0x30, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),RM) || bitRead(inst_roll, RM)) {
-    MIDI_noteOn(0x99, 0x25, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),HC) || bitRead(inst_roll, HC)) {
-    MIDI_noteOn(0x99, 0x27, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CW) || bitRead(inst_roll, CW)) {  // Crash Cymbal.
-    MIDI_noteOn(0x99, 0x31, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CY) || bitRead(inst_roll, CY)) {
-    MIDI_noteOn(0x99, 0x33, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),OH) || bitRead(inst_roll, OH)) {
-    MIDI_noteOn(0x99, 0x2E, velocity);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CH) || bitRead(inst_roll, CH)) {
-    MIDI_noteOn(0x99, 0x2A, velocity);
-  }
-
-  // Bonus: VOLCA SAMPLE.
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG1) || bitRead(inst_roll, TRIG1)) {
-    MIDI_noteOn(0x90, 0x29, 0x6b);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG2) || bitRead(inst_roll, TRIG2)) {
-    MIDI_noteOn(0x91, 0x2b, 0x6b);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG3) || bitRead(inst_roll, TRIG3)) {
-    MIDI_noteOn(0x92, 0x2d, 0x6b);
-  }
-
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),EXT1) || bitRead(inst_roll, EXT1)) {
-    MIDI_noteOn(0x93, 0x2f, 0x6b);
-  }
-
-}
-
-void Send_ExtNoteOff()
-{
-  if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),BD) || bitRead(inst_roll, BD)) {
     MIDI_noteOff(0x89, 0x23, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),SN) || bitRead(inst_roll, SN)) {
+    MIDI_noteOn(0x99, 0x26, velocity);
     MIDI_noteOff(0x89, 0x26, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),LT) || bitRead(inst_roll, LT)) {
+    MIDI_noteOn(0x99, 0x29, velocity);
     MIDI_noteOff(0x89, 0x29, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),MT) || bitRead(inst_roll, MT)) {
+    MIDI_noteOn(0x99, 0x2D, velocity);
     MIDI_noteOff(0x89, 0x2D, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),HT) || bitRead(inst_roll, HT)) {
+    MIDI_noteOn(0x99, 0x30, velocity);
     MIDI_noteOff(0x89, 0x30, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),RM) || bitRead(inst_roll, RM)) {
+    MIDI_noteOn(0x99, 0x25, velocity);
     MIDI_noteOff(0x89, 0x25, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),HC) || bitRead(inst_roll, HC)) {
+    MIDI_noteOn(0x99, 0x27, velocity);
     MIDI_noteOff(0x89, 0x27, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CW) || bitRead(inst_roll, CW)) {  // Crash Cymbal.
+    MIDI_noteOn(0x99, 0x31, velocity);
     MIDI_noteOff(0x89, 0x31, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CY) || bitRead(inst_roll, CY)) {
+    MIDI_noteOn(0x99, 0x33, velocity);
     MIDI_noteOff(0x89, 0x33, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),OH) || bitRead(inst_roll, OH)) {
+    MIDI_noteOn(0x99, 0x2E, velocity);
     MIDI_noteOff(0x89, 0x2E, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),CH) || bitRead(inst_roll, CH)) {
+    MIDI_noteOn(0x99, 0x2A, velocity);
     MIDI_noteOff(0x89, 0x2A, 0x45);
   }
 
   // Bonus: VOLCA SAMPLE.
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG1) || bitRead(inst_roll, TRIG1)) {
+    MIDI_noteOn(0x90, 0x29, 0x6b);
     MIDI_noteOff(0x80, 0x29, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG2) || bitRead(inst_roll, TRIG2)) {
+    MIDI_noteOn(0x91, 0x2b, 0x6b);
     MIDI_noteOff(0x81, 0x2b, 0x45);
   }
 
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),TRIG3) || bitRead(inst_roll, TRIG3)) {
+    MIDI_noteOn(0x92, 0x2d, 0x6b);
     MIDI_noteOff(0x82, 0x2d, 0x45);
   }
-  
+
   if (bitRead((inst_step_buffer[step_count][pattern_buffer])&(~inst_mute),EXT1) || bitRead(inst_roll, EXT1)) {
+    MIDI_noteOn(0x93, 0x2f, 0x6b);
     MIDI_noteOff(0x83, 0x2f, 0x45);
   }
+
 }
+
 
 void Count_96PPQN()
 {
@@ -269,9 +221,6 @@ void Count_96PPQN()
                 }
             }
         }
-        else if (ppqn_count==pattern_scale[pattern_buffer]/2){
-          Send_ExtNoteOff(); // Don't let midi output notes last longer than half a step.
-        }
     }
 
     //STOP=================================================================
@@ -314,12 +263,6 @@ void Count_96PPQN()
 
     Set_CPU_Trig_Low();
 
-    if (!step_changed) {
-        //MODE ROLL
-        if (roll_mode && ppqn_count % roll_scale[scale_type][roll_pointer] == 0 && inst_roll > 0) {
-            Send_ExtNoteOff();
-        }
-    }
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -369,9 +312,7 @@ ISR(PCINT3_vect)
         }
         else {
             SR.ShiftOut_Update(temp_step_led, inst_roll);
-            if (ppqn_count==pattern_scale[pattern_buffer]/2) {
-              Send_ExtNoteOff(); // Don't let midi output notes last longer than half a step.
-            }
+
             //MODE ROLL
             if (roll_mode && ppqn_count % (roll_scale[scale_type][roll_pointer] / 4) == 0 && inst_roll > 0) {
                 Send_Trig_Out(inst_roll);
